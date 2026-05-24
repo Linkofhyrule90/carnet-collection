@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Carnet de collection</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <nav class="main-nav" aria-label="Menus principaux">
+      <button class="nav-tab is-active" type="button" data-view="amiibo">Amiibo</button>
+      <button class="nav-tab" type="button" data-view="tips">Trucs & astuces</button>
+    </nav>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Collection</p>
+          <h1 class="brand-title">
+            <span>Nintendo</span>
+          </h1>
+        </div>
+        <div class="header-actions">
+          <div class="sync-status" id="syncStatus">Chargement de la liste en ligne...</div>
+          <div class="update-controls">
+            <button class="refresh-button" id="refreshDataButton" type="button">Actualiser Amiibo</button>
+            <span class="last-updated" id="lastUpdateLabel">Dernière mise à jour en ligne: jamais</span>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="app-view is-active" id="amiiboView" data-view-panel="amiibo">
+        <section class="summary-grid" aria-label="Résumé de la collection">
+          <article class="metric">
+            <span class="metric-label">Possédés</span>
+            <strong id="ownedCount">0</strong>
+          </article>
+          <article class="metric">
+            <span class="metric-label">Manquants</span>
+            <strong id="missingCount">0</strong>
+          </article>
+          <article class="metric">
+            <span class="metric-label">Total listé</span>
+            <strong id="totalCount">0</strong>
+          </article>
+          <article class="metric">
+            <span class="metric-label">Progression</span>
+            <strong id="progressCount">0%</strong>
+          </article>
+          <article class="metric">
+            <span class="metric-label">En attente</span>
+            <strong id="pendingMetricCount">0</strong>
+          </article>
+        </section>
+
+        <section class="toolbar" aria-label="Filtres d'inventaire">
+          <label class="search-field">
+            <span>Recherche</span>
+            <input id="searchInput" type="search" placeholder="Nom, personnage, série..." autocomplete="off">
+          </label>
+
+          <label>
+            <span>Type</span>
+            <select id="typeFilter">
+              <option value="">Tous les types</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Série amiibo</span>
+            <select id="seriesFilter">
+              <option value="">Toutes les séries</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Tri</span>
+            <select id="sortSelect">
+              <option value="name">Nom</option>
+              <option value="amiiboSeries">Série amiibo</option>
+              <option value="gameSeries">Série de jeu</option>
+              <option value="release">Sortie NA</option>
+            </select>
+          </label>
+
+          <div class="segmented" role="group" aria-label="Statut de possession">
+            <button class="segment is-active" type="button" data-status="all">Tous</button>
+            <button class="segment" type="button" data-status="owned">Possédés</button>
+            <button class="segment" type="button" data-status="missing">Manquants</button>
+          </div>
+
+          <button class="ghost-button" id="exportButton" type="button">Exporter CSV</button>
+        </section>
+
+        <section class="pending-panel" aria-labelledby="pendingTitle">
+          <div class="pending-header">
+            <div>
+              <p class="panel-kicker">Ajout manuel</p>
+              <h2 id="pendingTitle">Figurines en attente</h2>
+            </div>
+            <span id="pendingCount">0 entrée</span>
+          </div>
+          <form class="pending-form" id="pendingForm">
+            <label>
+              <span>Nom de la figurine</span>
+              <input id="pendingInput" type="text" placeholder="Ex.: Mario spécial..." autocomplete="off">
+            </label>
+            <button class="ghost-button pending-add-button" type="submit">Ajouter</button>
+          </form>
+          <ul class="pending-list" id="pendingList"></ul>
+          <p class="pending-empty" id="pendingEmpty">Aucune figurine en attente.</p>
+        </section>
+
+        <section class="list-header" aria-live="polite">
+          <h2 id="resultTitle">Inventaire</h2>
+          <p id="resultCount">0 résultat</p>
+        </section>
+        <p class="data-note">Liste chargée en direct depuis la base publique AmiiboAPI sur GitHub.</p>
+
+        <section class="amiibo-grid" id="amiiboGrid" aria-label="Liste des amiibo"></section>
+
+        <div class="empty-state" id="emptyState" hidden>
+          Aucun amiibo ne correspond aux filtres actuels.
+        </div>
+        </section>
+
+        <section class="app-view" id="tipsView" data-view-panel="tips" hidden>
+          <section class="tips-panel" aria-labelledby="tipsTitle">
+            <div class="tips-header">
+              <div>
+                <p class="panel-kicker">Jeux vidéo</p>
+                <h2 id="tipsTitle">Guides et cartes</h2>
+              </div>
+              <span id="gameCount">0 jeu</span>
+            </div>
+            <p class="guide-note" id="guideSourceCount">Ressources chargées depuis des sources publiques en ligne.</p>
+          </section>
+
+          <section class="list-header" aria-live="polite">
+            <h2>Jeux disponibles</h2>
+            <p id="gameLibraryCount">0 résultat</p>
+          </section>
+
+          <section class="game-grid" id="gameGrid" aria-label="Liste des jeux avec trucs et astuces"></section>
+
+          <div class="empty-state" id="gameEmptyState" hidden>Aucune ressource en ligne configurée.</div>
+
+          <section class="game-detail" id="gameDetail" aria-labelledby="selectedGameTitle" hidden>
+            <div class="game-detail-header">
+              <button class="secondary-button" id="backToGamesButton" type="button">Retour aux jeux</button>
+              <a class="secondary-button" id="selectedGamePrimaryLink" href="#" target="_blank" rel="noopener">Ouvrir la carte interactive</a>
+            </div>
+
+            <div class="selected-game">
+              <div class="selected-game-cover">
+                <img id="selectedGameImage" alt="">
+              </div>
+              <div>
+                <p class="panel-kicker">Ressources en ligne</p>
+                <h2 id="selectedGameTitle"></h2>
+                <p id="selectedGameTipCount"></p>
+                <p class="source-line" id="selectedGameDescription"></p>
+              </div>
+            </div>
+
+            <section class="personal-game-panel" aria-label="Suivi personnel du jeu">
+              <div class="personal-panel-header">
+                <div>
+                  <p class="panel-kicker">Suivi personnel</p>
+                  <h3>Notes personnelles</h3>
+                </div>
+              </div>
+
+              <label class="notes-field">
+                <span>Notes personnelles</span>
+                <textarea id="selectedGameNotes" rows="6" placeholder="Écris ici tes découvertes, objectifs, souvenirs ou choses à vérifier..."></textarea>
+              </label>
+              <p class="notes-save-state" id="notesSaveState">Notes sauvegardées automatiquement.</p>
+            </section>
+
+            <section class="resource-grid" id="resourceGrid" aria-label="Cartes et guides disponibles"></section>
+            <p class="source-line" id="selectedGameSource"></p>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <template id="amiiboCardTemplate">
+      <article class="amiibo-card">
+        <div class="image-wrap">
+          <img alt="" loading="lazy">
+        </div>
+        <div class="card-body">
+          <div>
+            <p class="series"></p>
+            <h3></h3>
+            <p class="character"></p>
+          </div>
+          <details class="details-panel">
+            <summary>Détails</summary>
+            <dl class="details">
+              <div>
+                <dt>Type</dt>
+                <dd class="type"></dd>
+              </div>
+              <div>
+                <dt>Jeu</dt>
+                <dd class="game-series"></dd>
+              </div>
+              <div>
+                <dt>Sortie NA</dt>
+                <dd class="release"></dd>
+              </div>
+              <div>
+                <dt>Source</dt>
+                <dd class="source-summary"></dd>
+              </div>
+            </dl>
+          </details>
+          <label class="owned-toggle">
+            <input type="checkbox">
+            <span>Je l'ai</span>
+          </label>
+        </div>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
