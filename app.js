@@ -12,6 +12,7 @@ const PLACEHOLDER_IMAGE =
 const GAME_PLACEHOLDER_IMAGE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 560'%3E%3Crect width='420' height='560' rx='20' fill='%23111514'/%3E%3Crect x='46' y='56' width='328' height='448' rx='16' fill='%23181f1b' stroke='%233f8f46' stroke-width='6'/%3E%3Ccircle cx='210' cy='226' r='74' fill='%232f6f38'/%3E%3Cpath d='M144 332h132M160 372h100' stroke='%23d2a85d' stroke-width='18' stroke-linecap='round'/%3E%3C/svg%3E";
 const BOTW_MAP_IMAGE = "https://upload.wikimedia.org/wikipedia/commons/0/0a/BoTW_HyruleMap.jpg";
+const TOTK_MAP_IMAGE = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Tears_of_the_Kingdom_logo.png/960px-Tears_of_the_Kingdom_logo.png";
 const GUIDE_GAMES = [
   {
     id: "breath-of-the-wild",
@@ -50,6 +51,72 @@ const GUIDE_GAMES = [
         secondaryUrl: "https://game8.co/games/Zelda-Breath-of-the-Wild/archives/292475",
         primaryLabel: "Carte interactive",
         secondaryLabel: "Liste Game8",
+      },
+    ],
+  },
+  {
+    id: "tears-of-the-kingdom",
+    title: "The Legend of Zelda: Tears of the Kingdom",
+    subtitle: "Nintendo Switch",
+    description:
+      "Cartes utiles pour explorer Hyrule, les Cieux et les Profondeurs: noix Korogu, sanctuaires, Lightroots et tours.",
+    image:
+      "https://upload.wikimedia.org/wikipedia/en/2/21/The_Legend_of_Zelda_Tears_of_the_Kingdom_cover.jpg",
+    source:
+      "Ressources: Zelda Dungeon Interactive Map, Game8, MapGenie, Fextralife Wiki.",
+    primaryUrl: "https://www.zeldadungeon.net/tears-of-the-kingdom-interactive-map/",
+    resources: [
+      {
+        id: "totk-korok-seeds",
+        title: "Noix Korogu",
+        count: "1000 emplacements",
+        label: "Carte de collection",
+        description:
+          "Carte interactive pour repérer les 1000 noix Korogu dispersées à travers Hyrule et les îles célestes.",
+        image: TOTK_MAP_IMAGE,
+        primaryUrl: "https://www.zeldadungeon.net/tears-of-the-kingdom-interactive-map/",
+        secondaryUrl: "https://mapgenie.io/zelda-tears-of-the-kingdom",
+        primaryLabel: "Carte interactive",
+        secondaryLabel: "MapGenie",
+      },
+      {
+        id: "totk-shrines",
+        title: "Sanctuaires",
+        count: "152 sanctuaires",
+        label: "Carte d'exploration",
+        description:
+          "Tous les sanctuaires de la surface et des îles célestes. Complète-les pour obtenir des orbes de lumière.",
+        image: TOTK_MAP_IMAGE,
+        primaryUrl: "https://www.zeldadungeon.net/tears-of-the-kingdom-interactive-map/",
+        secondaryUrl: "https://game8.co/games/Zelda-Tears-of-the-Kingdom/archives/393065",
+        primaryLabel: "Carte interactive",
+        secondaryLabel: "Guide Game8",
+      },
+      {
+        id: "totk-lightroots",
+        title: "Lightroots — Profondeurs",
+        count: "120 Lightroots",
+        label: "Carte des Profondeurs",
+        description:
+          "Les Lightroots illuminent les Profondeurs et correspondent aux sanctuaires de la surface. Carte essentielle pour explorer le monde souterrain.",
+        image: TOTK_MAP_IMAGE,
+        primaryUrl: "https://www.zeldadungeon.net/tears-of-the-kingdom-interactive-map/",
+        secondaryUrl: "https://zeldatearsofthekingdom.wiki.fextralife.com/Interactive+Map",
+        primaryLabel: "Carte interactive",
+        secondaryLabel: "Fextralife Wiki",
+      },
+      {
+        id: "totk-skyview-towers",
+        title: "Tours Ascenseur",
+        count: "15 tours",
+        label: "Carte de navigation",
+        description:
+          "Les 15 tours Ascenseur déverrouillent la carte de chaque région et propulsent Link dans les cieux.",
+        image: TOTK_MAP_IMAGE,
+        primaryUrl: "https://www.zeldadungeon.net/tears-of-the-kingdom-interactive-map/",
+        secondaryUrl: "https://mapgenie.io/zelda-tears-of-the-kingdom",
+        primaryLabel: "Carte interactive",
+        secondaryLabel: "MapGenie",
       },
     ],
   },
