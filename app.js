@@ -305,7 +305,7 @@ const GUIDE_GAMES = [
     ],
   },
 ];
-const ACTIVE_GUIDE_GAME_IDS = new Set(["breath-of-the-wild"]);
+const ACTIVE_GUIDE_GAME_IDS = new Set(["breath-of-the-wild", "tears-of-the-kingdom"]);
 const ACTIVE_GUIDE_GAMES = GUIDE_GAMES.filter((game) => ACTIVE_GUIDE_GAME_IDS.has(game.id));
 
 let audioContext;
