@@ -12,7 +12,7 @@ const PLACEHOLDER_IMAGE =
 const GAME_PLACEHOLDER_IMAGE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 560'%3E%3Crect width='420' height='560' rx='20' fill='%23111514'/%3E%3Crect x='46' y='56' width='328' height='448' rx='16' fill='%23181f1b' stroke='%233f8f46' stroke-width='6'/%3E%3Ccircle cx='210' cy='226' r='74' fill='%232f6f38'/%3E%3Cpath d='M144 332h132M160 372h100' stroke='%23d2a85d' stroke-width='18' stroke-linecap='round'/%3E%3C/svg%3E";
 const BOTW_MAP_IMAGE = "https://upload.wikimedia.org/wikipedia/commons/0/0a/BoTW_HyruleMap.jpg";
-const TOTK_MAP_IMAGE = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Tears_of_the_Kingdom_logo.png/960px-Tears_of_the_Kingdom_logo.png";
+const TOTK_MAP_IMAGE = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/The_Legend_of_Zelda_Tears_of_the_Kingdom.svg/960px-The_Legend_of_Zelda_Tears_of_the_Kingdom.svg.png";
 const GUIDE_GAMES = [
   {
     id: "breath-of-the-wild",
@@ -61,7 +61,7 @@ const GUIDE_GAMES = [
     description:
       "Cartes utiles pour explorer Hyrule, les Cieux et les Profondeurs: noix Korogu, sanctuaires, Lightroots et tours.",
     image:
-      "https://upload.wikimedia.org/wikipedia/en/2/21/The_Legend_of_Zelda_Tears_of_the_Kingdom_cover.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/The_Legend_of_Zelda_Tears_of_the_Kingdom.svg/960px-The_Legend_of_Zelda_Tears_of_the_Kingdom.svg.png",
     source:
       "Ressources: Zelda Dungeon Interactive Map, Game8, MapGenie, Fextralife Wiki.",
     primaryUrl: "https://www.zeldadungeon.net/tears-of-the-kingdom-interactive-map/",
