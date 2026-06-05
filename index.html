@@ -113,12 +113,19 @@
         </section>
 
         <section class="list-header" aria-live="polite">
-          <h2 id="resultTitle">Inventaire</h2>
-          <p id="resultCount">0 résultat</p>
+          <div class="list-header-text">
+            <h2 id="resultTitle">Inventaire</h2>
+            <p id="resultCount">0 résultat</p>
+          </div>
+          <div class="segmented view-mode-toggle" role="group" aria-label="Mode d'affichage">
+            <button class="segment is-active" type="button" data-view-mode="grid">Galerie</button>
+            <button class="segment" type="button" data-view-mode="list">Liste</button>
+          </div>
         </section>
         <p class="data-note">Liste chargée en direct depuis la base publique AmiiboAPI sur GitHub.</p>
 
-        <section class="amiibo-grid" id="amiiboGrid" aria-label="Liste des amiibo"></section>
+        <section class="amiibo-grid" id="amiiboGrid" aria-label="Galerie des amiibo"></section>
+        <section class="amiibo-list" id="amiiboList" aria-label="Liste des amiibo" hidden></section>
 
         <div class="empty-state" id="emptyState" hidden>
           Aucun amiibo ne correspond aux filtres actuels.

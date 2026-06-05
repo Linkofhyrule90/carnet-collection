@@ -312,6 +312,7 @@ let audioContext;
 
 const state = {
   activeView: "amiibo",
+  viewMode: "grid",
   amiibo: [],
   owned: new Set(),
   pending: [],
@@ -352,6 +353,8 @@ const els = {
   resultTitle: document.querySelector("#resultTitle"),
   resultCount: document.querySelector("#resultCount"),
   grid: document.querySelector("#amiiboGrid"),
+  amiiboList: document.querySelector("#amiiboList"),
+  viewModeButtons: document.querySelectorAll("[data-view-mode]"),
   emptyState: document.querySelector("#emptyState"),
   template: document.querySelector("#amiiboCardTemplate"),
   gameCount: document.querySelector("#gameCount"),
@@ -1275,10 +1278,63 @@ function renderCard(item) {
   return fragment;
 }
 
+function renderListRow(item) {
+  const row = document.createElement("div");
+  const id = getId(item);
+  const owned = state.owned.has(id);
+
+  row.className = "list-row";
+  row.classList.toggle("is-owned", owned);
+
+  const label = document.createElement("label");
+  label.className = "list-owned-toggle";
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = owned;
+  checkbox.dataset.id = id;
+  checkbox.setAttribute("aria-label", `Marquer ${item.name} comme possédé`);
+  label.append(checkbox);
+
+  const img = document.createElement("img");
+  img.src = item.image;
+  img.alt = item.name;
+  img.className = "list-row-img";
+  img.width = 44;
+  img.height = 44;
+  img.loading = "lazy";
+  img.onerror = () => { img.onerror = null; img.src = PLACEHOLDER_IMAGE; };
+
+  const info = document.createElement("div");
+  info.className = "list-row-info";
+  const name = document.createElement("span");
+  name.className = "list-row-name";
+  name.textContent = item.name || "Amiibo sans nom";
+  const series = document.createElement("span");
+  series.className = "list-row-series";
+  series.textContent = item.amiiboSeries || "";
+  info.append(name, series);
+
+  const date = document.createElement("span");
+  date.className = "list-row-date";
+  date.textContent = item.release?.na || "—";
+
+  row.append(label, img, info, date);
+  return row;
+}
+
 function render() {
   const items = getFilteredItems();
+  const useList = state.viewMode === "list";
 
-  els.grid.replaceChildren(...items.map(renderCard));
+  els.grid.hidden = useList;
+  els.amiiboList.hidden = !useList;
+
+  if (useList) {
+    els.amiiboList.replaceChildren(...items.map(renderListRow));
+  } else {
+    els.grid.replaceChildren(...items.map(renderCard));
+  }
+
   els.emptyState.hidden = items.length > 0;
   els.resultTitle.textContent = state.filters.status === "owned"
     ? "Figurines possédées"
@@ -1428,6 +1484,27 @@ function bindEvents() {
     if (!game) return;
     setGameProgress(game.id, { notes: event.target.value }, false);
     els.notesSaveState.textContent = "Notes sauvegardées automatiquement.";
+  });
+
+  els.viewModeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      state.viewMode = button.dataset.viewMode;
+      els.viewModeButtons.forEach((b) => b.classList.toggle("is-active", b === button));
+      render();
+    });
+  });
+
+  els.amiiboList.addEventListener("change", (event) => {
+    if (event.target.type !== "checkbox") return;
+    const id = event.target.dataset.id;
+    if (event.target.checked) {
+      state.owned.add(id);
+      playOwnedChime();
+    } else {
+      state.owned.delete(id);
+    }
+    saveOwned();
+    render();
   });
 
   els.refreshDataButton.addEventListener("click", refreshDatabase);
