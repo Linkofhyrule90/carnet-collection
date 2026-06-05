@@ -7,6 +7,41 @@ const PENDING_STORAGE_KEY = "amiibo-pending-v1";
 const LAST_UPDATE_KEY = "amiibo-live-last-update-v1";
 const GAME_PROGRESS_STORAGE_KEY = "game-guide-progress-v1";
 const INCLUDED_TYPES = new Set(["Figure"]);
+
+// Figurines annoncées par Nintendo absentes d'AmiiboAPI — mise à jour: 2026-06-04
+// Source: https://www.nintendo.com/amiibo/line-up/
+const NINTENDO_SUPPLEMENT = [
+  // Street Fighter 6 — 2025-06-05
+  { head: "f0000001", tail: "00000001", name: "Kimberly",                       character: "Kimberly",           amiiboSeries: "Street Fighter 6",        gameSeries: "Street Fighter",        release: { na: "2025-06-05", jp: "2025-06-05", eu: "2025-06-05", au: "2025-06-05" } },
+  { head: "f0000002", tail: "00000001", name: "Luke",                            character: "Luke",                amiiboSeries: "Street Fighter 6",        gameSeries: "Street Fighter",        release: { na: "2025-06-05", jp: "2025-06-05", eu: "2025-06-05", au: "2025-06-05" } },
+  { head: "f0000003", tail: "00000001", name: "Jamie",                           character: "Jamie",               amiiboSeries: "Street Fighter 6",        gameSeries: "Street Fighter",        release: { na: "2025-06-05", jp: "2025-06-05", eu: "2025-06-05", au: "2025-06-05" } },
+  // Donkey Kong Bananza — 2025-07-17
+  { head: "f0000004", tail: "00000001", name: "Donkey Kong & Pauline",           character: "Donkey Kong",         amiiboSeries: "Donkey Kong Bananza",     gameSeries: "Donkey Kong",           release: { na: "2025-07-17", jp: "2025-07-17", eu: "2025-07-17", au: "2025-07-17" } },
+  // Kirby Air Riders vague 1 — 2025-11-20
+  { head: "f0000005", tail: "00000001", name: "Kirby & Warp Star",               character: "Kirby",               amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: { na: "2025-11-20", jp: "2025-11-20", eu: "2025-11-20", au: "2025-11-20" } },
+  { head: "f0000006", tail: "00000001", name: "Bandana Waddle Dee & Winged Star",character: "Bandana Waddle Dee",  amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: { na: "2025-11-20", jp: "2025-11-20", eu: "2025-11-20", au: "2025-11-20" } },
+  // Kirby Air Riders vague 2 — 2026-03-05
+  { head: "f0000007", tail: "00000001", name: "Meta Knight & Shadow Star",       character: "Meta Knight",         amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: { na: "2026-03-05", jp: "2026-03-05", eu: "2026-03-05", au: "2026-03-05" } },
+  // Super Mario Bros. Wonder — 2026-03-26
+  { head: "f0000008", tail: "00000001", name: "Elephant Mario",                  character: "Mario",               amiiboSeries: "Super Mario Bros. Wonder",gameSeries: "Super Mario Bros.",     release: { na: "2026-03-26", jp: "2026-03-26", eu: "2026-03-26", au: "2026-03-26" } },
+  { head: "f0000009", tail: "00000001", name: "Captain Toad & Talking Flower",   character: "Captain Toad",        amiiboSeries: "Super Mario Bros. Wonder",gameSeries: "Super Mario Bros.",     release: { na: "2026-03-26", jp: "2026-03-26", eu: "2026-03-26", au: "2026-03-26" } },
+  { head: "f000000a", tail: "00000001", name: "Poplin & Prince Florian",         character: "Prince Florian",      amiiboSeries: "Super Mario Bros. Wonder",gameSeries: "Super Mario Bros.",     release: { na: "2026-03-26", jp: "2026-03-26", eu: "2026-03-26", au: "2026-03-26" } },
+  // Super Mario Galaxy — 2026-04-02
+  { head: "f000000b", tail: "00000001", name: "Mario and Luma",                  character: "Mario",               amiiboSeries: "Super Mario Galaxy",      gameSeries: "Super Mario Galaxy",    release: { na: "2026-04-02", jp: "2026-04-02", eu: "2026-04-02", au: "2026-04-02" } },
+  { head: "f000000c", tail: "00000001", name: "Rosalina and Lumas",              character: "Rosalina",            amiiboSeries: "Super Mario Galaxy",      gameSeries: "Super Mario Galaxy",    release: { na: "2026-04-02", jp: "2026-04-02", eu: "2026-04-02", au: "2026-04-02" } },
+  // Kirby Air Riders vague 3 — 2026-07-02
+  { head: "f000000d", tail: "00000001", name: "King Dedede & Tank Star",         character: "King Dedede",         amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: { na: "2026-07-02", jp: "2026-07-02", eu: "2026-07-02", au: "2026-07-02" } },
+  // Splatoon Raiders — 2026-07-23
+  { head: "f000000e", tail: "00000001", name: "Big Man",                         character: "Big Man",             amiiboSeries: "Splatoon Raiders",        gameSeries: "Splatoon",              release: { na: "2026-07-23", jp: "2026-07-23", eu: "2026-07-23", au: "2026-07-23" } },
+  { head: "f000000f", tail: "00000001", name: "Frye",                            character: "Frye",                amiiboSeries: "Splatoon Raiders",        gameSeries: "Splatoon",              release: { na: "2026-07-23", jp: "2026-07-23", eu: "2026-07-23", au: "2026-07-23" } },
+  { head: "f0000010", tail: "00000001", name: "Shiver",                          character: "Shiver",              amiiboSeries: "Splatoon Raiders",        gameSeries: "Splatoon",              release: { na: "2026-07-23", jp: "2026-07-23", eu: "2026-07-23", au: "2026-07-23" } },
+  // The Legend of Zelda: Tears of the Kingdom — 2026-09-17
+  { head: "f0000011", tail: "00000001", name: "Mineru's Construct",              character: "Mineru",              amiiboSeries: "The Legend of Zelda",     gameSeries: "The Legend of Zelda",   release: { na: "2026-09-17", jp: "2026-09-17", eu: "2026-09-17", au: "2026-09-17" } },
+  // Kirby Air Riders — date à confirmer
+  { head: "f0000012", tail: "00000001", name: "Chef Kawasaki & Hop Star",        character: "Chef Kawasaki",       amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: {} },
+  { head: "f0000013", tail: "00000001", name: "Sword Kirby & Dragoon",           character: "Kirby",               amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: {} },
+  { head: "f0000014", tail: "00000001", name: "Noir Dedede & Hydra",             character: "King Dedede",         amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: {} },
+];
 const PLACEHOLDER_IMAGE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Crect width='240' height='240' rx='18' fill='%23111514'/%3E%3Ccircle cx='120' cy='92' r='38' fill='%23313a35'/%3E%3Cpath d='M58 190c14-34 37-51 62-51s48 17 62 51' fill='%23313a35'/%3E%3C/svg%3E";
 const GAME_PLACEHOLDER_IMAGE =
@@ -1125,7 +1160,18 @@ async function loadOnlineInventory() {
   const items = getInventoryItems(normalizeAmiiboSource(payload));
   if (!items.length) throw new Error("Aucune figurine reçue");
 
-  return items;
+  // Fusionner le supplément Nintendo — on n'ajoute que ce qui est absent de l'API
+  const apiNames = new Set(items.map((i) => normalize(i.name)));
+  const supplementItems = NINTENDO_SUPPLEMENT
+    .filter((i) => !apiNames.has(normalize(i.name)))
+    .map((i) => ({
+      ...i,
+      type: "Figure",
+      image: PLACEHOLDER_IMAGE,
+      sourceUrl: "https://www.nintendo.com/amiibo/line-up/",
+    }));
+
+  return [...items, ...supplementItems];
 }
 
 async function refreshDatabase() {

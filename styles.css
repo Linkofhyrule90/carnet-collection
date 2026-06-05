@@ -913,6 +913,11 @@ button:focus-visible {
   white-space: nowrap;
 }
 
+.amiibo-grid[hidden],
+.amiibo-list[hidden] {
+  display: none;
+}
+
 .amiibo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
