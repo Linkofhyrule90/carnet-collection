@@ -45,10 +45,6 @@
             <span class="metric-label">Progression</span>
             <strong id="progressCount">0%</strong>
           </article>
-          <article class="metric">
-            <span class="metric-label">En attente</span>
-            <strong id="pendingMetricCount">0</strong>
-          </article>
         </section>
 
         <section class="toolbar" aria-label="Filtres d'inventaire">
@@ -88,25 +84,6 @@
           </div>
 
           <button class="ghost-button" id="exportButton" type="button">Exporter CSV</button>
-        </section>
-
-        <section class="pending-panel" aria-labelledby="pendingTitle">
-          <div class="pending-header">
-            <div>
-              <p class="panel-kicker">Ajout manuel</p>
-              <h2 id="pendingTitle">Figurines en attente</h2>
-            </div>
-            <span id="pendingCount">0 entrée</span>
-          </div>
-          <form class="pending-form" id="pendingForm">
-            <label>
-              <span>Nom de la figurine</span>
-              <input id="pendingInput" type="text" placeholder="Ex.: Mario spécial..." autocomplete="off">
-            </label>
-            <button class="ghost-button pending-add-button" type="submit">Ajouter</button>
-          </form>
-          <ul class="pending-list" id="pendingList"></ul>
-          <p class="pending-empty" id="pendingEmpty">Aucune figurine en attente.</p>
         </section>
 
         <section class="list-header" aria-live="polite">

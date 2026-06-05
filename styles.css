@@ -201,7 +201,7 @@ h1 {
 
 .summary-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 18px;
 }
@@ -352,95 +352,12 @@ button:focus-visible {
   font-weight: 700;
 }
 
-.pending-panel {
-  display: grid;
-  gap: 12px;
-  border: 1px solid rgba(210, 168, 93, 0.3);
-  border-radius: 8px;
-  background: rgba(210, 168, 93, 0.07);
-  box-shadow: var(--shadow);
-  margin-top: 14px;
-  padding: 14px;
-}
-
-.pending-header {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.pending-header h2 {
-  margin-bottom: 0;
-  font-size: 1.08rem;
-}
-
 .panel-kicker {
   margin-bottom: 4px;
   color: var(--gold);
   font-size: 0.72rem;
   font-weight: 900;
   text-transform: uppercase;
-}
-
-.pending-header span,
-.pending-empty {
-  color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 800;
-}
-
-.pending-form {
-  display: grid;
-  grid-template-columns: minmax(220px, 1fr) auto;
-  align-items: end;
-  gap: 10px;
-}
-
-.pending-add-button {
-  min-width: 118px;
-}
-
-.pending-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.pending-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  max-width: 100%;
-  border: 1px solid rgba(210, 168, 93, 0.32);
-  border-radius: 8px;
-  background: rgba(24, 27, 26, 0.74);
-  color: var(--text);
-  padding: 8px 8px 8px 10px;
-}
-
-.pending-item span {
-  overflow-wrap: anywhere;
-  font-size: 0.86rem;
-  font-weight: 850;
-}
-
-.pending-item button {
-  min-height: 28px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: var(--surface-soft);
-  color: var(--muted);
-  font-size: 0.76rem;
-  font-weight: 850;
-}
-
-.pending-item button:hover {
-  border-color: var(--gold);
-  color: var(--gold);
 }
 
 .tips-panel {
@@ -906,6 +823,34 @@ button:focus-visible {
   text-overflow: ellipsis;
 }
 
+.list-row-note {
+  width: 100%;
+  min-height: 24px;
+  height: 24px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted);
+  padding: 0 6px;
+  font-size: 0.75rem;
+  font-style: italic;
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.list-row-note:hover {
+  border-color: var(--border);
+}
+
+.list-row-note:focus {
+  border-color: var(--border);
+  background: var(--surface-soft);
+  outline: none;
+}
+
+.list-row-note::placeholder {
+  color: #555f59;
+}
+
 .list-row-date {
   font-size: 0.8rem;
   color: var(--muted);
@@ -1283,12 +1228,6 @@ dd {
     display: grid;
   }
 
-  .pending-header,
-  .pending-form {
-    grid-template-columns: 1fr;
-  }
-
-  .pending-header,
   .tips-header,
   .game-detail-header,
   .personal-panel-header {

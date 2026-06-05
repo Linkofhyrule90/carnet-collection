@@ -3,7 +3,7 @@ const AMIIBO_DATABASE_URL =
 const AMIIBO_IMAGE_BASE_URL =
   "https://raw.githubusercontent.com/N3evin/AmiiboAPI/master/images";
 const STORAGE_KEY = "amiibo-inventory-v1";
-const PENDING_STORAGE_KEY = "amiibo-pending-v1";
+const NOTES_STORAGE_KEY = "amiibo-notes-v1";
 const LAST_UPDATE_KEY = "amiibo-live-last-update-v1";
 const GAME_PROGRESS_STORAGE_KEY = "game-guide-progress-v1";
 const INCLUDED_TYPES = new Set(["Figure", "Pack"]);
@@ -379,7 +379,7 @@ const state = {
   viewMode: "grid",
   amiibo: [],
   owned: new Set(),
-  pending: [],
+  notes: {},
   gameProgress: {},
   selectedGameId: null,
   filters: {
@@ -401,18 +401,12 @@ const els = {
   missingCount: document.querySelector("#missingCount"),
   totalCount: document.querySelector("#totalCount"),
   progressCount: document.querySelector("#progressCount"),
-  pendingMetricCount: document.querySelector("#pendingMetricCount"),
   searchInput: document.querySelector("#searchInput"),
   typeFilter: document.querySelector("#typeFilter"),
   seriesFilter: document.querySelector("#seriesFilter"),
   sortSelect: document.querySelector("#sortSelect"),
   statusButtons: document.querySelectorAll("[data-status]"),
   exportButton: document.querySelector("#exportButton"),
-  pendingForm: document.querySelector("#pendingForm"),
-  pendingInput: document.querySelector("#pendingInput"),
-  pendingList: document.querySelector("#pendingList"),
-  pendingCount: document.querySelector("#pendingCount"),
-  pendingEmpty: document.querySelector("#pendingEmpty"),
   resultTitle: document.querySelector("#resultTitle"),
   resultCount: document.querySelector("#resultCount"),
   grid: document.querySelector("#amiiboGrid"),
@@ -1040,19 +1034,17 @@ function saveOwned() {
   writeStorage(STORAGE_KEY, JSON.stringify([...state.owned]));
 }
 
-function loadPending() {
+function loadNotes() {
   try {
-    const saved = JSON.parse(readStorage(PENDING_STORAGE_KEY) || "[]");
-    state.pending = Array.isArray(saved)
-      ? saved.filter((item) => item?.id && item?.name)
-      : [];
+    const saved = JSON.parse(readStorage(NOTES_STORAGE_KEY) || "{}");
+    state.notes = typeof saved === "object" && saved !== null ? saved : {};
   } catch {
-    state.pending = [];
+    state.notes = {};
   }
 }
 
-function savePending() {
-  writeStorage(PENDING_STORAGE_KEY, JSON.stringify(state.pending));
+function saveNotes() {
+  writeStorage(NOTES_STORAGE_KEY, JSON.stringify(state.notes));
 }
 
 function playOwnedChime() {
@@ -1111,41 +1103,6 @@ function playOwnedChime() {
     oscillator.start(start);
     oscillator.stop(end + 0.03);
   });
-}
-
-function pendingId(name) {
-  return normalize(name).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
-
-function addPendingItem(name) {
-  const cleanName = name.trim().replace(/\s+/g, " ");
-  if (!cleanName) return;
-
-  const id = pendingId(cleanName);
-  if (!id) return;
-
-  const alreadyExists = state.pending.some((item) => item.id === id);
-  if (alreadyExists) {
-    setStatus("Cette figurine est déjà dans la liste en attente.", "warning");
-    return;
-  }
-
-  state.pending = [
-    ...state.pending,
-    {
-      id,
-      name: cleanName,
-      createdAt: new Date().toISOString(),
-    },
-  ].sort((a, b) => a.name.localeCompare(b.name, "fr", { sensitivity: "base" }));
-  savePending();
-  renderPending();
-}
-
-function removePendingItem(id) {
-  state.pending = state.pending.filter((item) => item.id !== id);
-  savePending();
-  renderPending();
 }
 
 function setStatus(message, tone = "neutral") {
@@ -1292,30 +1249,6 @@ function updateSummary() {
   els.missingCount.textContent = missing.toLocaleString("fr-CA");
   els.totalCount.textContent = total.toLocaleString("fr-CA");
   els.progressCount.textContent = `${progress}%`;
-  els.pendingMetricCount.textContent = state.pending.length.toLocaleString("fr-CA");
-}
-
-function renderPending() {
-  els.pendingMetricCount.textContent = state.pending.length.toLocaleString("fr-CA");
-  els.pendingCount.textContent = `${state.pending.length.toLocaleString("fr-CA")} entrée${state.pending.length > 1 ? "s" : ""}`;
-  els.pendingEmpty.hidden = state.pending.length > 0;
-
-  els.pendingList.replaceChildren(...state.pending.map((item) => {
-    const listItem = document.createElement("li");
-    listItem.className = "pending-item";
-
-    const name = document.createElement("span");
-    name.textContent = item.name;
-
-    const button = document.createElement("button");
-    button.type = "button";
-    button.dataset.pendingId = item.id;
-    button.textContent = "Retirer";
-    button.setAttribute("aria-label", `Retirer ${item.name} de la liste en attente`);
-
-    listItem.append(name, button);
-    return listItem;
-  }));
 }
 
 function renderCard(item) {
@@ -1420,7 +1353,14 @@ function renderListRow(item) {
   const series = document.createElement("span");
   series.className = "list-row-series";
   series.textContent = item.amiiboSeries || "";
-  info.append(name, series);
+  const noteId = getId(item);
+  const noteInput = document.createElement("input");
+  noteInput.type = "text";
+  noteInput.className = "list-row-note";
+  noteInput.placeholder = "Note personnelle...";
+  noteInput.value = state.notes[noteId] || "";
+  noteInput.dataset.noteId = noteId;
+  info.append(name, series, noteInput);
 
   const date = document.createElement("span");
   date.className = "list-row-date";
@@ -1483,18 +1423,6 @@ function exportCsv() {
       item.release?.na || "",
       item.image || "",
       item.sourceUrl || AMIIBO_DATABASE_URL,
-    ]),
-    ...state.pending.map((item) => [
-      `pending-${item.id}`,
-      "en attente",
-      item.name,
-      "",
-      "En attente",
-      "",
-      "",
-      "",
-      "",
-      "Saisie manuelle",
     ]),
   ];
 
@@ -1563,19 +1491,6 @@ function bindEvents() {
     render();
   });
 
-  els.pendingForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    addPendingItem(els.pendingInput.value);
-    els.pendingInput.value = "";
-    els.pendingInput.focus();
-  });
-
-  els.pendingList.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-pending-id]");
-    if (!button) return;
-    removePendingItem(button.dataset.pendingId);
-  });
-
   els.gameGrid.addEventListener("change", (event) => {
     const field = event.target.dataset.progressField;
     const gameId = event.target.dataset.gameId;
@@ -1619,15 +1534,27 @@ function bindEvents() {
     render();
   });
 
+  els.amiiboList.addEventListener("input", (event) => {
+    const input = event.target.closest(".list-row-note");
+    if (!input) return;
+    const id = input.dataset.noteId;
+    if (!id) return;
+    if (input.value.trim()) {
+      state.notes[id] = input.value;
+    } else {
+      delete state.notes[id];
+    }
+    saveNotes();
+  });
+
   els.exportButton.addEventListener("click", exportCsv);
 }
 
 loadOwned();
-loadPending();
+loadNotes();
 loadGameProgress();
 updateLastUpdateLabel();
 bindEvents();
-renderPending();
 renderGameLibrary();
 setActiveView("amiibo");
 refreshDatabase();
