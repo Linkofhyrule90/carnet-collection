@@ -834,7 +834,7 @@ button:focus-visible {
 
 .list-row {
   display: grid;
-  grid-template-columns: 44px 48px 1fr auto;
+  grid-template-columns: 44px 48px 1fr auto auto;
   align-items: center;
   gap: 14px;
   padding: 10px 16px;
@@ -1198,6 +1198,21 @@ dd {
   height: 18px;
   margin: 0 8px 0 0;
   accent-color: var(--green);
+}
+
+.price-tag {
+  margin: 4px 0 0;
+  padding: 0;
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.list-row-price {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gold);
+  white-space: nowrap;
 }
 
 .amiibo-card.is-owned .owned-toggle {

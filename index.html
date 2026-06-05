@@ -21,11 +21,8 @@
           </h1>
         </div>
         <div class="header-actions">
-          <div class="sync-status" id="syncStatus">Chargement de la liste en ligne...</div>
-          <div class="update-controls">
-            <button class="refresh-button" id="refreshDataButton" type="button">Actualiser Amiibo</button>
-            <span class="last-updated" id="lastUpdateLabel">Dernière mise à jour en ligne: jamais</span>
-          </div>
+          <div class="sync-status" id="syncStatus" hidden></div>
+          <span class="last-updated" id="lastUpdateLabel"></span>
         </div>
       </header>
 
@@ -122,7 +119,7 @@
             <button class="segment" type="button" data-view-mode="list">Liste</button>
           </div>
         </section>
-        <p class="data-note">Liste chargée en direct depuis la base publique AmiiboAPI sur GitHub.</p>
+        <p class="data-note">Sources : AmiiboAPI · Nintendo.com · PriceCharting &nbsp;·&nbsp; Prix ~$CA (1 USD = 1,39 $CA) · Données du supplément : <span id="supplementDate"></span></p>
 
         <section class="amiibo-grid" id="amiiboGrid" aria-label="Galerie des amiibo"></section>
         <section class="amiibo-list" id="amiiboList" aria-label="Liste des amiibo" hidden></section>
@@ -225,6 +222,7 @@
               </div>
             </dl>
           </details>
+          <p class="price-tag" hidden></p>
           <label class="owned-toggle">
             <input type="checkbox">
             <span>Je l'ai</span>
@@ -233,6 +231,7 @@
       </article>
     </template>
 
+    <script src="data/market-values.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

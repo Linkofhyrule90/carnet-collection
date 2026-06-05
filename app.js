@@ -6,7 +6,9 @@ const STORAGE_KEY = "amiibo-inventory-v1";
 const PENDING_STORAGE_KEY = "amiibo-pending-v1";
 const LAST_UPDATE_KEY = "amiibo-live-last-update-v1";
 const GAME_PROGRESS_STORAGE_KEY = "game-guide-progress-v1";
-const INCLUDED_TYPES = new Set(["Figure"]);
+const INCLUDED_TYPES = new Set(["Figure", "Pack"]);
+const USD_CAD_RATE = 1.3924; // Banque du Canada, 5 juin 2026
+const SUPPLEMENT_UPDATED = "5 juin 2026";
 
 // Figurines annoncées par Nintendo absentes d'AmiiboAPI — mise à jour: 2026-06-04
 // Source: https://www.nintendo.com/amiibo/line-up/
@@ -41,6 +43,33 @@ const NINTENDO_SUPPLEMENT = [
   { head: "f0000012", tail: "00000001", name: "Chef Kawasaki & Hop Star",        character: "Chef Kawasaki",       amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: {} },
   { head: "f0000013", tail: "00000001", name: "Sword Kirby & Dragoon",           character: "Kirby",               amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: {} },
   { head: "f0000014", tail: "00000001", name: "Noir Dedede & Hydra",             character: "King Dedede",         amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: {} },
+  // Packs / Ensembles figure — source: PriceCharting
+  { head: "f0010001", tail: "00000002", name: "Splatoon Deep Cut Set: Shiver, Frye & Big Man", character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2023-11-17" } },
+  { head: "f0010002", tail: "00000002", name: "Cat Mario & Cat Peach Double Pack",              character: "", amiiboSeries: "Super Mario",                          gameSeries: "Super Mario Bros.",     type: "Pack", release: { na: "2021-02-12" } },
+  { head: "f0010003", tail: "00000002", name: "Zelda Breath of the Wild Champions Set",         character: "", amiiboSeries: "The Legend of Zelda: Breath of the Wild", gameSeries: "The Legend of Zelda", type: "Pack", release: { na: "2017-11-10" } },
+  { head: "f0010004", tail: "00000002", name: "Metroid Dread 2 Amiibo Pack",                    character: "", amiiboSeries: "Metroid",                               gameSeries: "Metroid",               type: "Pack", release: { na: "2021-10-08" } },
+  { head: "f0010005", tail: "00000002", name: "Retro 3 Pack",                                   character: "", amiiboSeries: "Super Smash Bros.",                     gameSeries: "Super Smash Bros.",     type: "Pack", release: { na: "2015-09-25" } },
+  { head: "f0010006", tail: "00000002", name: "Mii 3 Pack",                                     character: "", amiiboSeries: "Super Smash Bros.",                     gameSeries: "Super Smash Bros.",     type: "Pack", release: { na: "2015-11-01" } },
+  { head: "f0010007", tail: "00000002", name: "Animal Crossing 3 Pack",                         character: "", amiiboSeries: "Animal Crossing",                       gameSeries: "Animal Crossing",       type: "Pack", release: { na: "2015-11-13" } },
+  { head: "f0010008", tail: "00000002", name: "Splatoon 3 Pack",                                character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2015-05-29" } },
+  { head: "f0010009", tail: "00000002", name: "Splatoon 3 Pack [Alt Colors]",                   character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2016-07-08" } },
+  { head: "f001000a", tail: "00000002", name: "Splatoon 3 Pack [Octoling]",                     character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2018-12-07" } },
+  { head: "f001000b", tail: "00000002", name: "Callie and Marie 2 Pack",                        character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2017-07-21" } },
+  { head: "f001000c", tail: "00000002", name: "Fire Emblem 2 Pack",                             character: "", amiiboSeries: "Fire Emblem",                           gameSeries: "Fire Emblem",           type: "Pack", release: { na: "2017-05-19" } },
+  { head: "f001000d", tail: "00000002", name: "Toon Link & Zelda 2 Pack",                       character: "", amiiboSeries: "30th Anniversary",                      gameSeries: "The Legend of Zelda",   type: "Pack", release: { na: "2016-12-02" } },
+  { head: "f001000e", tail: "00000002", name: "Isabelle & Digby 2 Pack",                        character: "", amiiboSeries: "Animal Crossing",                       gameSeries: "Animal Crossing",       type: "Pack", release: { na: "2020-11-20" } },
+  { head: "f001000f", tail: "00000002", name: "Mario Odyssey Wedding 3 Pack",                   character: "", amiiboSeries: "Super Mario Odyssey",                   gameSeries: "Super Mario Bros.",     type: "Pack", release: { na: "2017-10-27" } },
+  { head: "f0010010", tail: "00000002", name: "Steve & Alex 2-Pack",                            character: "", amiiboSeries: "Super Smash Bros.",                     gameSeries: "Minecraft",             type: "Pack", release: { na: "2022-09-09" } },
+  { head: "f0010011", tail: "00000002", name: "Pyra & Mythra 2-Pack",                           character: "", amiiboSeries: "Super Smash Bros.",                     gameSeries: "Xenoblade Chronicles",  type: "Pack", release: { na: "2023-07-21" } },
+  { head: "f0010012", tail: "00000002", name: "Metroid 2 Pack",                                 character: "", amiiboSeries: "Metroid",                               gameSeries: "Metroid",               type: "Pack", release: { na: "2017-09-15" } },
+  { head: "f0010013", tail: "00000002", name: "Pearl & Marina 2 Pack",                          character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2018-07-13" } },
+  { head: "f0010014", tail: "00000002", name: "Pearl And Marina Side Order 2-Pack",             character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2024-09-05" } },
+  { head: "f0010015", tail: "00000002", name: "Callie And Marie Alterna 2-Pack",                character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2024-09-05" } },
+  { head: "f0010016", tail: "00000002", name: "Shovel Knight Treasure Trove 3 Pack",            character: "", amiiboSeries: "Shovel Knight",                         gameSeries: "Shovel Knight",         type: "Pack", release: { na: "2019-12-31" } },
+  { head: "f0010017", tail: "00000002", name: "Yarn Yoshi - Pink",                              character: "", amiiboSeries: "Yoshi's Woolly World",                  gameSeries: "Yoshi",                 type: "Pack", release: { na: "2015-10-16" } },
+  { head: "f0010018", tail: "00000002", name: "Yarn Yoshi - Blue",                              character: "", amiiboSeries: "Yoshi's Woolly World",                  gameSeries: "Yoshi",                 type: "Pack", release: { na: "2015-10-16" } },
+  { head: "f0010019", tail: "00000002", name: "Yarn Yoshi - Green",                             character: "", amiiboSeries: "Yoshi's Woolly World",                  gameSeries: "Yoshi",                 type: "Pack", release: { na: "2015-10-16" } },
+  { head: "f001001a", tail: "00000002", name: "Yarn Yoshi - Mega",                              character: "", amiiboSeries: "Yoshi's Woolly World",                  gameSeries: "Yoshi",                 type: "Pack", release: { na: "2015-11-15" } },
 ];
 const PLACEHOLDER_IMAGE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Crect width='240' height='240' rx='18' fill='%23111514'/%3E%3Ccircle cx='120' cy='92' r='38' fill='%23313a35'/%3E%3Cpath d='M58 190c14-34 37-51 62-51s48 17 62 51' fill='%23313a35'/%3E%3C/svg%3E";
@@ -367,7 +396,6 @@ const els = {
   viewPanels: document.querySelectorAll("[data-view-panel]"),
   headerActions: document.querySelector(".header-actions"),
   syncStatus: document.querySelector("#syncStatus"),
-  refreshDataButton: document.querySelector("#refreshDataButton"),
   lastUpdateLabel: document.querySelector("#lastUpdateLabel"),
   ownedCount: document.querySelector("#ownedCount"),
   missingCount: document.querySelector("#missingCount"),
@@ -1147,9 +1175,12 @@ function setLastUpdateDate(value) {
 }
 
 function updateLastUpdateLabel() {
-  const date = getLastUpdateDate();
-  els.lastUpdateLabel.textContent = `Dernière mise à jour en ligne: ${formatUpdateDate(date)}`;
-  els.lastUpdateLabel.title = "Source: AmiiboAPI sur GitHub";
+  const apiDate = getLastUpdateDate();
+  const supplementEl = document.querySelector("#supplementDate");
+  if (supplementEl) supplementEl.textContent = SUPPLEMENT_UPDATED;
+  els.lastUpdateLabel.textContent = apiDate
+    ? `Chargé le ${formatUpdateDate(apiDate)}`
+    : "";
 }
 
 async function loadOnlineInventory() {
@@ -1175,8 +1206,6 @@ async function loadOnlineInventory() {
 }
 
 async function refreshDatabase() {
-  els.refreshDataButton.disabled = true;
-  els.refreshDataButton.textContent = "Actualisation...";
   setStatus("Lecture de la liste publique AmiiboAPI...");
 
   try {
@@ -1196,9 +1225,6 @@ async function refreshDatabase() {
       "Impossible de joindre la source en ligne. Vérifie ta connexion, puis réessaie.",
       "error"
     );
-  } finally {
-    els.refreshDataButton.disabled = false;
-    els.refreshDataButton.textContent = "Actualiser Amiibo";
   }
 }
 
@@ -1321,7 +1347,43 @@ function renderCard(item) {
   checkbox.dataset.id = id;
   checkbox.setAttribute("aria-label", `Marquer ${item.name} comme possédé`);
 
+  const priceTag = fragment.querySelector(".price-tag");
+  const usdPrice = lookupPrice(item);
+  if (priceTag && usdPrice != null) {
+    priceTag.textContent = formatPriceCAD(usdPrice);
+    priceTag.hidden = false;
+  }
+
   return fragment;
+}
+
+let _priceMap = null;
+function getPriceMap() {
+  if (_priceMap) return _priceMap;
+  if (!window.AMIIBO_MARKET_VALUES) return (_priceMap = new Map());
+  _priceMap = new Map();
+  for (const item of window.AMIIBO_MARKET_VALUES.items) {
+    const price = item.loose != null ? item.loose : item.new;
+    if (price == null) continue;
+    const key = normalize(item.title);
+    if (!_priceMap.has(key)) _priceMap.set(key, price);
+  }
+  return _priceMap;
+}
+
+function lookupPrice(item) {
+  const map = getPriceMap();
+  const name = normalize(item.name);
+  if (map.has(name)) return map.get(name);
+  // Essai sans ponctuation spéciale: "Pyra & Mythra 2-Pack" → "pyra mythra 2 pack"
+  const cleaned = name.replace(/[&()\[\]-]/g, " ").replace(/\s+/g, " ").trim();
+  if (map.has(cleaned)) return map.get(cleaned);
+  return null;
+}
+
+function formatPriceCAD(usdPrice) {
+  if (usdPrice == null) return null;
+  return `~${Math.round(usdPrice * USD_CAD_RATE)} $CA`;
 }
 
 function renderListRow(item) {
@@ -1364,7 +1426,11 @@ function renderListRow(item) {
   date.className = "list-row-date";
   date.textContent = item.release?.na || "—";
 
-  row.append(label, img, info, date);
+  const priceEl = document.createElement("span");
+  priceEl.className = "list-row-price";
+  const usdPrice = lookupPrice(item);
+  priceEl.textContent = usdPrice != null ? formatPriceCAD(usdPrice) : "";
+  row.append(label, img, info, priceEl, date);
   return row;
 }
 
@@ -1553,7 +1619,6 @@ function bindEvents() {
     render();
   });
 
-  els.refreshDataButton.addEventListener("click", refreshDatabase);
   els.exportButton.addEventListener("click", exportCsv);
 }
 
