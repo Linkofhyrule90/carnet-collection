@@ -442,6 +442,71 @@ function imageUrl(head, tail) {
   return `${AMIIBO_IMAGE_BASE_URL}/icon_${head}-${tail}.png`;
 }
 
+// ── Boîte d'emballage Nintendo CDN ────────────────────────────────────────
+const CDN_BOX_BASE = "https://assets.nintendo.com/image/upload/f_jpg,q_auto,w_500/amiibo";
+
+const CDN_SERIES_CONFIG = {
+  "Super Mario Bros.":    { f: "Super%20Mario",               s: "super-mario" },
+  "Super Smash Bros.":    { f: "Super%20Smash%20Bros.",        s: "super-smash-bros" },
+  "Splatoon":             { f: "Splatoon",                     s: "splatoon" },
+  "Animal Crossing":      { f: "Animal%20Crossing",            s: "animal-crossing" },
+  "Kirby":                { f: "Kirby",                        s: "kirby" },
+  "Metroid":              { f: "Metroid",                      s: "metroid" },
+  "Fire Emblem":          { f: "Fire%20Emblem",                s: "fire-emblem" },
+  "Shovel Knight":        { f: "Shovel%20Knight",              s: "shovel-knight" },
+  "Xenoblade Chronicles": { f: "Xenoblade%20Chronicles%203",   s: "xenoblade-chronicles" },
+  "Super Mario Odyssey":  { f: "Super%20Mario%20Odyssey",      s: "super-mario-odyssey" },
+  "Monster Hunter":       { f: "Monster%20Hunter%20Rise",      s: "monster-hunter" },
+  "Yoshi's Woolly World": { f: "Yoshi%27s%20Woolly%20World",   s: "yoshis-woolly-world" },
+  "Pikmin":               { f: "Pikmin",                       s: "pikmin" },
+  "Mega Man":             { f: "Mega%20Man",                   s: "mega-man" },
+  "Dark Souls":           { f: "Dark%20Souls",                 s: "dark-souls" },
+  "Diablo":               { f: "Diablo",                       s: "diablo-3" },
+  "Chibi-Robo!":          { f: "Chibi-Robo",                   s: "chibi-robo" },
+  "Street Fighter 6":     { f: "Street%20Fighter%206",         s: "street-fighter-6" },
+};
+
+function toBoxSlug(str) {
+  return str
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/\./g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function getBoxImageUrl(name, amiiboSeries) {
+  if (!name || !amiiboSeries) return null;
+  const ns = toBoxSlug(name);
+
+  // Cas spécial : Wolf Link (pas de suffixe de série dans l'URL CDN)
+  if (ns === "wolf-link")
+    return `${CDN_BOX_BASE}/The%20Legend%20of%20Zelda/Breath%20of%20the%20Wild/wolf-link-amiibo-box`;
+
+  // The Legend of Zelda — sous-dossier selon le jeu
+  if (amiiboSeries.startsWith("The Legend of Zelda")) {
+    let folder = "The%20Legend%20of%20Zelda";
+    if (amiiboSeries.includes("Breath of the Wild"))   folder += "/Breath%20of%20the%20Wild";
+    else if (amiiboSeries.includes("Tears of the Kingdom")) folder += "/Tears%20of%20the%20Kingdom";
+    else if (amiiboSeries.includes("Link's Awakening")) folder += "/Link%27s%20Awakening";
+    return `${CDN_BOX_BASE}/${folder}/${ns}-amiibo-the-legend-of-zelda-series-box`;
+  }
+
+  // 30e anniversaire — dossier varie selon le personnage (Mario vs Zelda)
+  if (amiiboSeries === "30th Anniversary") {
+    if (/link|zelda|toon/i.test(name))
+      return `${CDN_BOX_BASE}/The%20Legend%20of%20Zelda/${ns}-amiibo-30th-anniversary-series-box`;
+    return `${CDN_BOX_BASE}/Super%20Mario%20Bros.%2030th%20Anniversary/30th-anniversary-${ns}-amiibo-30th-anniversary-series-box`;
+  }
+
+  // Séries standard
+  const cfg = CDN_SERIES_CONFIG[amiiboSeries];
+  if (!cfg) return null;
+  return `${CDN_BOX_BASE}/${cfg.f}/${ns}-amiibo-${cfg.s}-series-box`;
+}
+// ─────────────────────────────────────────────────────────────────────────
+
 function findMappedValue(map, key) {
   if (!map || !key) return "";
   return map[key] || map[key.toLowerCase()] || map[key.toUpperCase()] || "";
@@ -1147,7 +1212,8 @@ async function loadOnlineInventory() {
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
   const payload = await response.json();
-  const items = getInventoryItems(normalizeAmiiboSource(payload));
+  const items = getInventoryItems(normalizeAmiiboSource(payload))
+    .map((i) => ({ ...i, boxImage: getBoxImageUrl(i.name, i.amiiboSeries) || undefined }));
   if (!items.length) throw new Error("Aucune figurine reçue");
 
   // Fusionner le supplément Nintendo — on n'ajoute que ce qui est absent de l'API
@@ -1158,6 +1224,7 @@ async function loadOnlineInventory() {
       ...i,
       type: i.type || "Figure",
       image: i.image || PLACEHOLDER_IMAGE,
+      boxImage: i.boxImage || getBoxImageUrl(i.name, i.amiiboSeries) || undefined,
       sourceUrl: "https://www.nintendo.com/amiibo/line-up/",
     }));
 
@@ -1291,6 +1358,29 @@ function renderCard(item) {
   };
   image.alt = item.name;
 
+  if (item.boxImage) {
+    const wrap = fragment.querySelector(".image-wrap");
+    const btn = document.createElement("button");
+    btn.className = "box-toggle";
+    btn.title = "Voir l'emballage";
+    btn.setAttribute("aria-label", "Basculer entre figurine et emballage");
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const showingBox = btn.classList.toggle("is-box");
+      wrap.classList.toggle("is-box-view", showingBox);
+      if (showingBox) {
+        image.src = item.boxImage;
+        image.onerror = () => { image.onerror = null; image.src = item.image; btn.remove(); wrap.classList.remove("is-box-view"); };
+        btn.title = "Voir la figurine";
+      } else {
+        image.src = item.image;
+        image.onerror = () => { image.onerror = null; image.src = PLACEHOLDER_IMAGE; };
+        btn.title = "Voir l'emballage";
+      }
+    });
+    wrap.appendChild(btn);
+  }
+
   fragment.querySelector(".series").textContent = item.amiiboSeries || "Série inconnue";
   fragment.querySelector("h3").textContent = item.name || "Amiibo sans nom";
   fragment.querySelector(".character").textContent = item.character || "Personnage inconnu";
@@ -1361,6 +1451,30 @@ function renderListRow(item) {
   img.loading = "lazy";
   img.onerror = () => { img.onerror = null; img.src = PLACEHOLDER_IMAGE; };
 
+  const imgWrap = document.createElement("div");
+  imgWrap.className = "list-img-wrap";
+  imgWrap.appendChild(img);
+  if (item.boxImage) {
+    const btn = document.createElement("button");
+    btn.className = "box-toggle";
+    btn.title = "Voir l'emballage";
+    btn.setAttribute("aria-label", "Basculer entre figurine et emballage");
+    btn.addEventListener("click", () => {
+      const showingBox = btn.classList.toggle("is-box");
+      imgWrap.classList.toggle("is-box-view", showingBox);
+      if (showingBox) {
+        img.src = item.boxImage;
+        img.onerror = () => { img.onerror = null; img.src = item.image; btn.remove(); imgWrap.classList.remove("is-box-view"); };
+        btn.title = "Voir la figurine";
+      } else {
+        img.src = item.image;
+        img.onerror = () => { img.onerror = null; img.src = PLACEHOLDER_IMAGE; };
+        btn.title = "Voir l'emballage";
+      }
+    });
+    imgWrap.appendChild(btn);
+  }
+
   const info = document.createElement("div");
   info.className = "list-row-info";
   const name = document.createElement("span");
@@ -1382,7 +1496,7 @@ function renderListRow(item) {
   date.className = "list-row-date";
   date.textContent = item.release?.na || "—";
 
-  row.append(label, img, info, date);
+  row.append(label, imgWrap, info, date);
   return row;
 }
 
