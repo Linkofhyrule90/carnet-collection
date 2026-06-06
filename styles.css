@@ -781,7 +781,7 @@ button:focus-visible {
 
 .list-row {
   display: grid;
-  grid-template-columns: 44px 48px 1fr auto auto;
+  grid-template-columns: 44px 48px 1fr auto;
   align-items: center;
   gap: 14px;
   padding: 10px 16px;

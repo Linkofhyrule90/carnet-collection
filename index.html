@@ -103,15 +103,15 @@
               <span>Masquer couverts par pack</span>
             </label>
             <div class="segmented view-mode-toggle" role="group" aria-label="Mode d'affichage">
-              <button class="segment is-active" type="button" data-view-mode="grid">Galerie</button>
-              <button class="segment" type="button" data-view-mode="list">Liste</button>
+              <button class="segment" type="button" data-view-mode="grid">Galerie</button>
+              <button class="segment is-active" type="button" data-view-mode="list">Liste</button>
             </div>
           </div>
         </section>
-        <p class="data-note">Sources : AmiiboAPI · Nintendo.com · PriceCharting &nbsp;·&nbsp; Prix ~$CA (1 USD = 1,39 $CA) · Données du supplément : <span id="supplementDate"></span></p>
+        <p class="data-note">Sources : AmiiboAPI · Nintendo.com · Données du supplément : <span id="supplementDate"></span></p>
 
-        <section class="amiibo-grid" id="amiiboGrid" aria-label="Galerie des amiibo"></section>
-        <section class="amiibo-list" id="amiiboList" aria-label="Liste des amiibo" hidden></section>
+        <section class="amiibo-grid" id="amiiboGrid" aria-label="Galerie des amiibo" hidden></section>
+        <section class="amiibo-list" id="amiiboList" aria-label="Liste des amiibo"></section>
 
         <div class="empty-state" id="emptyState" hidden>
           Aucun amiibo ne correspond aux filtres actuels.
@@ -220,7 +220,6 @@
       </article>
     </template>
 
-    <script src="data/market-values.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

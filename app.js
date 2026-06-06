@@ -376,7 +376,7 @@ let audioContext;
 
 const state = {
   activeView: "amiibo",
-  viewMode: "grid",
+  viewMode: "list",
   amiibo: [],
   owned: new Set(),
   notes: {},
@@ -1157,7 +1157,7 @@ async function loadOnlineInventory() {
     .map((i) => ({
       ...i,
       type: i.type || "Figure",
-      image: i.image || PLACEHOLDER_IMAGE,
+      image: PLACEHOLDER_IMAGE,
       sourceUrl: "https://www.nintendo.com/amiibo/line-up/",
     }));
 
@@ -1303,13 +1303,6 @@ function renderCard(item) {
   checkbox.dataset.id = id;
   checkbox.setAttribute("aria-label", `Marquer ${item.name} comme possédé`);
 
-  const priceTag = fragment.querySelector(".price-tag");
-  const usdPrice = lookupPrice(item);
-  if (priceTag && usdPrice != null) {
-    priceTag.textContent = formatPriceCAD(usdPrice);
-    priceTag.hidden = false;
-  }
-
   return fragment;
 }
 
@@ -1389,11 +1382,7 @@ function renderListRow(item) {
   date.className = "list-row-date";
   date.textContent = item.release?.na || "—";
 
-  const priceEl = document.createElement("span");
-  priceEl.className = "list-row-price";
-  const usdPrice = lookupPrice(item);
-  priceEl.textContent = usdPrice != null ? formatPriceCAD(usdPrice) : "";
-  row.append(label, img, info, priceEl, date);
+  row.append(label, img, info, date);
   return row;
 }
 
