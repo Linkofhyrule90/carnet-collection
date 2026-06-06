@@ -388,7 +388,7 @@ const state = {
     series: "",
     status: "all",
     sort: "name",
-    hideCovered: false,
+    hideCovered: true,
   },
 };
 
