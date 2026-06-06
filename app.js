@@ -1156,7 +1156,7 @@ async function loadOnlineInventory() {
     .filter((i) => !apiNames.has(normalize(i.name)))
     .map((i) => ({
       ...i,
-      type: "Figure",
+      type: i.type || "Figure",
       image: PLACEHOLDER_IMAGE,
       sourceUrl: "https://www.nintendo.com/amiibo/line-up/",
     }));
