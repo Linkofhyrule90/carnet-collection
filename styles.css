@@ -345,6 +345,36 @@ button:focus-visible {
   font-weight: 700;
 }
 
+.list-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.pack-coverage-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pack-coverage-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--gold);
+  flex-shrink: 0;
+}
+
+.pack-coverage-toggle:has(input:checked) {
+  color: var(--gold);
+}
+
 .data-note {
   margin: -6px 0 16px;
   color: var(--muted);

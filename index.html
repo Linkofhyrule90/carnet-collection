@@ -97,9 +97,15 @@
             <h2 id="resultTitle">Inventaire</h2>
             <p id="resultCount">0 résultat</p>
           </div>
-          <div class="segmented view-mode-toggle" role="group" aria-label="Mode d'affichage">
-            <button class="segment is-active" type="button" data-view-mode="grid">Galerie</button>
-            <button class="segment" type="button" data-view-mode="list">Liste</button>
+          <div class="list-header-controls">
+            <label class="pack-coverage-toggle">
+              <input type="checkbox" id="hideCoveredToggle">
+              <span>Masquer couverts par pack</span>
+            </label>
+            <div class="segmented view-mode-toggle" role="group" aria-label="Mode d'affichage">
+              <button class="segment is-active" type="button" data-view-mode="grid">Galerie</button>
+              <button class="segment" type="button" data-view-mode="list">Liste</button>
+            </div>
           </div>
         </section>
         <p class="data-note">Sources : AmiiboAPI · Nintendo.com · PriceCharting &nbsp;·&nbsp; Prix ~$CA (1 USD = 1,39 $CA) · Données du supplément : <span id="supplementDate"></span></p>
