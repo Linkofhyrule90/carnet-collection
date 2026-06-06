@@ -1226,6 +1226,8 @@ function getFilteredItems() {
     if (state.filters.type && item.type !== state.filters.type) return false;
     if (state.filters.series && item.amiiboSeries !== state.filters.series) return false;
     const ownedViaPack = covered.has(normalize(item.name));
+    // Masquer complètement les figurines couvertes par un pack (non possédées directement)
+    if (state.filters.hideCovered && ownedViaPack && !owned) return false;
     const effectivelyOwned = owned || ownedViaPack;
     if (state.filters.status === "owned" && !effectivelyOwned) return false;
     if (state.filters.status === "missing" && effectivelyOwned) return false;
