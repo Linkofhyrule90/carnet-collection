@@ -8,7 +8,7 @@ const LAST_UPDATE_KEY = "amiibo-live-last-update-v1";
 const GAME_PROGRESS_STORAGE_KEY = "game-guide-progress-v1";
 const INCLUDED_TYPES = new Set(["Figure", "Pack"]);
 const USD_CAD_RATE = 1.3924; // Banque du Canada, 5 juin 2026
-const SUPPLEMENT_UPDATED = "5 juin 2026";
+const SUPPLEMENT_UPDATED = "7 juin 2026";
 
 // Figurines annoncées par Nintendo absentes d'AmiiboAPI — mise à jour: 2026-06-04
 // Source: https://www.nintendo.com/amiibo/line-up/
@@ -1217,9 +1217,11 @@ async function loadOnlineInventory() {
   if (!items.length) throw new Error("Aucune figurine reçue");
 
   // Fusionner le supplément Nintendo — on n'ajoute que ce qui est absent de l'API
-  const apiNames = new Set(items.map((i) => normalize(i.name)));
+  // Clé: nom+série pour éviter de filtrer des figurines homonymes dans des séries différentes
+  // (ex. "Samus" existe dans Super Smash Bros. ET Metroid Prime 4: Beyond)
+  const apiKeys = new Set(items.map((i) => `${normalize(i.name)}|${normalize(i.amiiboSeries)}`));
   const supplementItems = NINTENDO_SUPPLEMENT
-    .filter((i) => !apiNames.has(normalize(i.name)))
+    .filter((i) => !apiKeys.has(`${normalize(i.name)}|${normalize(i.amiiboSeries)}`))
     .map((i) => ({
       ...i,
       type: i.type || "Figure",
@@ -1270,13 +1272,21 @@ function sortItems(items) {
 }
 
 function buildCoveredSet() {
+  // Retourne un Set de clés "nom|série" pour les figurines couvertes par un pack possédé.
+  // On utilise nom+série (pas seulement le nom) pour éviter de masquer des figurines
+  // homonymes d'une autre série (ex. "Samus" SSB ≠ "Samus" Metroid Dread).
   const covered = new Set();
   if (!state.filters.hideCovered) return covered;
-  for (const item of state.amiibo) {
-    if (item.type === "Pack" && state.owned.has(getId(item)) && Array.isArray(item.includes)) {
-      for (const name of item.includes) {
-        covered.add(normalize(name));
-      }
+  for (const pack of state.amiibo) {
+    if (pack.type !== "Pack" || !state.owned.has(getId(pack)) || !Array.isArray(pack.includes)) continue;
+    const packSeries = normalize(pack.amiiboSeries);
+    for (const name of pack.includes) {
+      const normName = normalize(name);
+      // Préférer une figurine dont la série correspond à celle du pack
+      const figure =
+        state.amiibo.find((a) => a.type !== "Pack" && normalize(a.name) === normName && normalize(a.amiiboSeries) === packSeries) ||
+        state.amiibo.find((a) => a.type !== "Pack" && normalize(a.name) === normName);
+      if (figure) covered.add(`${normalize(figure.name)}|${normalize(figure.amiiboSeries)}`);
     }
   }
   return covered;
@@ -1292,7 +1302,7 @@ function getFilteredItems() {
 
     if (state.filters.type && item.type !== state.filters.type) return false;
     if (state.filters.series && item.amiiboSeries !== state.filters.series) return false;
-    const ownedViaPack = covered.has(normalize(item.name));
+    const ownedViaPack = covered.has(`${normalize(item.name)}|${normalize(item.amiiboSeries)}`);
     // Masquer complètement les figurines couvertes par un pack (non possédées directement)
     if (state.filters.hideCovered && ownedViaPack && !owned) return false;
     const effectivelyOwned = owned || ownedViaPack;
@@ -1330,7 +1340,7 @@ function updateSummary() {
   const total = state.amiibo.length;
   const covered = buildCoveredSet();
   const owned = state.amiibo.filter((item) =>
-    state.owned.has(getId(item)) || covered.has(normalize(item.name))
+    state.owned.has(getId(item)) || covered.has(`${normalize(item.name)}|${normalize(item.amiiboSeries)}`)
   ).length;
   const missing = Math.max(total - owned, 0);
   const progress = total ? Math.round((owned / total) * 100) : 0;
