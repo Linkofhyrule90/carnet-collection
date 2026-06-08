@@ -39,6 +39,10 @@ const NINTENDO_SUPPLEMENT = [
   { head: "f0000010", tail: "00000001", name: "Shiver",                          character: "Shiver",              amiiboSeries: "Splatoon Raiders",        gameSeries: "Splatoon",              release: { na: "2026-07-23", jp: "2026-07-23", eu: "2026-07-23", au: "2026-07-23" }, image: "assets/supplement/shiver-raiders.png" },
   // The Legend of Zelda: Tears of the Kingdom — 2026-09-17
   { head: "f0000011", tail: "00000001", name: "Mineru's Construct",              character: "Mineru",              amiiboSeries: "The Legend of Zelda",     gameSeries: "The Legend of Zelda",   release: { na: "2026-09-17", jp: "2026-09-17", eu: "2026-09-17", au: "2026-09-17" }, image: "assets/supplement/mineru.png" },
+  // Monster Hunter Stories 3: Twisted Reflection — 2026-03-13
+  { head: "f0000015", tail: "00000001", name: "Ratha",   character: "Ratha",  amiiboSeries: "Monster Hunter", gameSeries: "Monster Hunter Stories", release: { na: "2026-03-13", jp: "2026-03-13", eu: "2026-03-13", au: "2026-03-13" }, image: "assets/supplement/ratha.png" },
+  { head: "f0000016", tail: "00000001", name: "Ratha V", character: "Ratha",  amiiboSeries: "Monster Hunter", gameSeries: "Monster Hunter Stories", release: { na: "2026-03-13", jp: "2026-03-13", eu: "2026-03-13", au: "2026-03-13" }, image: "assets/supplement/ratha-v.png" },
+  { head: "f0000017", tail: "00000001", name: "Rudy",    character: "Rudy",   amiiboSeries: "Monster Hunter", gameSeries: "Monster Hunter Stories", release: { na: "2026-03-13", jp: "2026-03-13", eu: "2026-03-13", au: "2026-03-13" }, image: "assets/supplement/rudy.png" },
   // Kirby Air Riders — date à confirmer
   { head: "f0000012", tail: "00000001", name: "Chef Kawasaki & Hop Star",        character: "Chef Kawasaki",       amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: {}, image: "assets/supplement/chef-kawasaki.png" },
   { head: "f0000013", tail: "00000001", name: "Sword Kirby & Dragoon",           character: "Kirby",               amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: {}, image: "assets/supplement/sword-kirby.png" },
