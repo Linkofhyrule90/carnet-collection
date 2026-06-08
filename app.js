@@ -412,6 +412,9 @@ const els = {
   sortSelect: document.querySelector("#sortSelect"),
   statusButtons: document.querySelectorAll("[data-status]"),
   exportButton: document.querySelector("#exportButton"),
+  exportCollectionButton: document.querySelector("#exportCollectionButton"),
+  importCollectionButton: document.querySelector("#importCollectionButton"),
+  importCollectionInput: document.querySelector("#importCollectionInput"),
   resultTitle: document.querySelector("#resultTitle"),
   resultCount: document.querySelector("#resultCount"),
   grid: document.querySelector("#amiiboGrid"),
@@ -1581,6 +1584,61 @@ function exportCsv() {
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
+// ── Synchronisation entre appareils (export/import JSON) ───────────────────
+
+function exportCollection() {
+  const date = new Date().toISOString().slice(0, 10);
+  const data = {
+    version: 1,
+    exported: new Date().toISOString(),
+    owned: [...state.owned],
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `amiibo-collection-${date}.json`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+function importCollection(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data || !Array.isArray(data.owned)) {
+        alert("Fichier invalide — ce n'est pas un fichier d'export de collection amiibo.");
+        return;
+      }
+      const incoming = data.owned.length;
+      const current  = state.owned.size;
+      const exportedOn = data.exported
+        ? new Date(data.exported).toLocaleDateString("fr-CA", { dateStyle: "medium" })
+        : "date inconnue";
+      const msg = [
+        `Fichier exporté le : ${exportedOn}`,
+        `Figurines cochées dans le fichier : ${incoming}`,
+        `Figurines cochées sur cet appareil : ${current}`,
+        "",
+        "Remplacer ta collection actuelle par celle du fichier ?",
+      ].join("\n");
+      if (!confirm(msg)) return;
+
+      state.owned = new Set(data.owned);
+      saveOwned();
+      render();
+      updateSummary();
+      alert(`✓ Collection importée — ${incoming} figurine${incoming > 1 ? "s" : ""} cochée${incoming > 1 ? "s" : ""}.`);
+    } catch {
+      alert("Impossible de lire le fichier. Assure-toi d'utiliser un fichier exporté depuis cette application.");
+    }
+  };
+  reader.readAsText(file);
+}
+
 function bindEvents() {
   els.navTabs.forEach((button) => {
     button.addEventListener("click", () => {
@@ -1688,6 +1746,18 @@ function bindEvents() {
   });
 
   els.exportButton.addEventListener("click", exportCsv);
+
+  els.exportCollectionButton.addEventListener("click", exportCollection);
+
+  els.importCollectionButton.addEventListener("click", () => {
+    els.importCollectionInput.value = "";
+    els.importCollectionInput.click();
+  });
+
+  els.importCollectionInput.addEventListener("change", () => {
+    const file = els.importCollectionInput.files[0];
+    if (file) importCollection(file);
+  });
 
   if (els.hideCoveredToggle) {
     els.hideCoveredToggle.addEventListener("change", () => {

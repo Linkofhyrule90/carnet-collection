@@ -90,6 +90,12 @@
           </div>
 
           <button class="ghost-button" id="exportButton" type="button">Exporter CSV</button>
+
+          <div class="sync-buttons" role="group" aria-label="Synchronisation entre appareils">
+            <button class="ghost-button sync-btn" id="exportCollectionButton" type="button" title="Télécharger un fichier .json pour l'importer sur un autre appareil">⬇ Exporter ma collection</button>
+            <button class="ghost-button sync-btn" id="importCollectionButton" type="button" title="Importer un fichier .json exporté depuis un autre appareil">⬆ Importer</button>
+            <input type="file" id="importCollectionInput" accept=".json" hidden aria-hidden="true">
+          </div>
         </section>
 
         <section class="list-header" aria-live="polite">

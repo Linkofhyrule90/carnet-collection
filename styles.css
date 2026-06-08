@@ -230,7 +230,7 @@ h1 {
 
 .toolbar {
   display: grid;
-  grid-template-columns: minmax(220px, 1.25fr) repeat(3, minmax(150px, 0.75fr)) auto auto;
+  grid-template-columns: minmax(220px, 1.25fr) repeat(3, minmax(150px, 0.75fr)) auto auto auto;
   align-items: end;
   gap: 12px;
   border: 1px solid var(--border);
@@ -324,6 +324,27 @@ button:focus-visible {
 
 .ghost-button:hover {
   background: var(--accent-dark);
+}
+
+.sync-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sync-btn {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 36px;
+}
+
+.sync-btn:hover {
+  background: var(--surface-strong);
+  border-color: var(--accent);
+  color: var(--text);
 }
 
 .list-header {
