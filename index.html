@@ -23,7 +23,7 @@
         <div>
           <p class="eyebrow">Collection</p>
           <h1 class="brand-title">
-            <span>Nintendo</span>
+            <span>Amiibo</span>
           </h1>
         </div>
         <div class="header-actions">
@@ -34,69 +34,40 @@
 
       <main>
         <section class="app-view is-active" id="amiiboView" data-view-panel="amiibo">
-        <section class="summary-grid" aria-label="Résumé de la collection">
-          <article class="metric">
-            <span class="metric-label">Possédés</span>
-            <strong id="ownedCount">0</strong>
-          </article>
-          <article class="metric">
-            <span class="metric-label">Manquants</span>
-            <strong id="missingCount">0</strong>
-          </article>
-          <article class="metric">
-            <span class="metric-label">Total listé</span>
-            <strong id="totalCount">0</strong>
-          </article>
-          <article class="metric">
-            <span class="metric-label">Progression</span>
-            <strong id="progressCount">0%</strong>
-          </article>
-        </section>
+        <div class="summary-bar" aria-label="Résumé de la collection">
+          <span class="stat" data-stat="owned"><span class="stat-label">Possédés</span><strong id="ownedCount">—</strong></span>
+          <span class="stat" data-stat="missing"><span class="stat-label">Manquants</span><strong id="missingCount">—</strong></span>
+          <span class="stat" data-stat="total"><span class="stat-label">Total</span><strong id="totalCount">—</strong></span>
+          <span class="stat" data-stat="progress"><span class="stat-label">Progression</span><strong id="progressCount">—</strong></span>
+        </div>
 
-        <section class="toolbar" aria-label="Filtres d'inventaire">
-          <label class="search-field">
-            <span>Recherche</span>
-            <input id="searchInput" type="search" placeholder="Nom, personnage, série..." autocomplete="off">
-          </label>
-
-          <label>
-            <span>Type</span>
-            <select id="typeFilter">
-              <option value="">Tous les types</option>
-            </select>
-          </label>
-
-          <label>
-            <span>Série amiibo</span>
-            <select id="seriesFilter">
-              <option value="">Toutes les séries</option>
-            </select>
-          </label>
-
-          <label>
-            <span>Tri</span>
-            <select id="sortSelect">
-              <option value="name">Nom</option>
-              <option value="amiiboSeries">Série amiibo</option>
-              <option value="gameSeries">Série de jeu</option>
-              <option value="release">Sortie NA</option>
-            </select>
-          </label>
-
+        <div class="filter-bar">
+          <input id="searchInput" class="filter-search" type="search" placeholder="Recherche…" autocomplete="off" aria-label="Rechercher par nom, personnage ou série">
+          <select id="typeFilter" aria-label="Filtrer par type">
+            <option value="">Tous les types</option>
+          </select>
+          <select id="seriesFilter" aria-label="Filtrer par série">
+            <option value="">Toutes les séries</option>
+          </select>
+          <select id="sortSelect" aria-label="Tri">
+            <option value="name">Tri · Nom</option>
+            <option value="amiiboSeries">Tri · Série</option>
+            <option value="gameSeries">Tri · Jeu</option>
+            <option value="release">Tri · Date</option>
+          </select>
           <div class="segmented" role="group" aria-label="Statut de possession">
             <button class="segment is-active" type="button" data-status="all">Tous</button>
             <button class="segment" type="button" data-status="owned">Possédés</button>
             <button class="segment" type="button" data-status="missing">Manquants</button>
+            <button class="segment" type="button" data-status="covered">Mis de côté</button>
           </div>
-
-          <button class="ghost-button" id="exportButton" type="button">Exporter CSV</button>
-
-          <div class="sync-buttons" role="group" aria-label="Synchronisation entre appareils">
-            <button class="ghost-button sync-btn" id="exportCollectionButton" type="button" title="Télécharger un fichier .json pour l'importer sur un autre appareil">⬇ Exporter ma collection</button>
-            <button class="ghost-button sync-btn" id="importCollectionButton" type="button" title="Importer un fichier .json exporté depuis un autre appareil">⬆ Importer</button>
+          <div class="filter-actions" role="group" aria-label="Export et import de collection">
+            <button class="filter-action-btn" id="exportButton" type="button" title="Exporter la liste en CSV">CSV</button>
+            <button class="filter-action-btn" id="exportCollectionButton" type="button" title="Télécharger un fichier .json pour l'importer sur un autre appareil">⬇ Exporter</button>
+            <button class="filter-action-btn" id="importCollectionButton" type="button" title="Importer un fichier .json exporté depuis un autre appareil">⬆ Importer</button>
             <input type="file" id="importCollectionInput" accept=".json" hidden aria-hidden="true">
           </div>
-        </section>
+        </div>
 
         <section class="list-header" aria-live="polite">
           <div class="list-header-text">

@@ -49,26 +49,26 @@ const NINTENDO_SUPPLEMENT = [
   { head: "f0000014", tail: "00000001", name: "Noir Dedede & Hydra",             character: "King Dedede",         amiiboSeries: "Kirby Air Riders",        gameSeries: "Kirby",                 release: {}, image: "assets/supplement/noir-dedede.png" },
   // Packs / Ensembles figure — source: PriceCharting
   { head: "f0010001", tail: "00000002", name: "Splatoon Deep Cut Set: Shiver, Frye & Big Man", character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2023-11-17" }, includes: ["Shiver", "Frye", "Big Man"], image: "assets/supplement/splatoon-deep-cut-set.png" },
-  { head: "f0010002", tail: "00000002", name: "Cat Mario & Cat Peach Double Pack",              character: "", amiiboSeries: "Super Mario",                          gameSeries: "Super Mario Bros.",     type: "Pack", release: { na: "2021-02-12" }, includes: ["Cat Mario", "Cat Peach"], image: "assets/supplement/cat-mario-cat-peach.png" },
+  { head: "f0010002", tail: "00000002", name: "Cat Mario & Cat Peach Double Pack",              character: "", amiiboSeries: "Super Mario",                          gameSeries: "Super Mario Bros.",     type: "Pack", release: { na: "2021-02-12" }, includes: ["Mario - Cat", "Peach - Cat"], image: "assets/supplement/cat-mario-cat-peach.png" },
   { head: "f0010003", tail: "00000002", name: "Zelda Breath of the Wild Champions Set",         character: "", amiiboSeries: "The Legend of Zelda: Breath of the Wild", gameSeries: "The Legend of Zelda", type: "Pack", release: { na: "2017-11-10" }, includes: ["Daruk", "Urbosa", "Revali", "Mipha"], image: "assets/supplement/botw-champions-set.png" },
-  { head: "f0010004", tail: "00000002", name: "Metroid Dread 2 Amiibo Pack",                    character: "", amiiboSeries: "Metroid",                               gameSeries: "Metroid",               type: "Pack", release: { na: "2021-10-08" }, includes: ["Samus", "E.M.M.I."], image: "assets/supplement/metroid-dread-2-pack.png" },
+  { head: "f0010004", tail: "00000002", name: "Metroid Dread 2 Amiibo Pack",                    character: "", amiiboSeries: "Metroid",                               gameSeries: "Metroid",               type: "Pack", release: { na: "2021-10-08" }, includes: ["Samus - Metroid Dread", "E.M.M.I."], image: "assets/supplement/metroid-dread-2-pack.png" },
   { head: "f0010005", tail: "00000002", name: "Retro 3 Pack",                                   character: "", amiiboSeries: "Super Smash Bros.",                     gameSeries: "Super Smash Bros.",     type: "Pack", release: { na: "2015-09-25" }, includes: ["R.O.B.", "Mr. Game & Watch", "Duck Hunt"], image: "assets/supplement/retro-3-pack.png" },
   { head: "f0010006", tail: "00000002", name: "Mii 3 Pack",                                     character: "", amiiboSeries: "Super Smash Bros.",                     gameSeries: "Super Smash Bros.",     type: "Pack", release: { na: "2015-11-01" }, includes: ["Mii Swordfighter", "Mii Brawler", "Mii Gunner"], image: "assets/supplement/mii-fighter-3-pack.png" },
-  { head: "f0010007", tail: "00000002", name: "Animal Crossing 3 Pack",                         character: "", amiiboSeries: "Animal Crossing",                       gameSeries: "Animal Crossing",       type: "Pack", release: { na: "2015-11-13" }, includes: ["Tom Nook", "K.K.", "Isabelle (Winter Outfit)"], image: "assets/supplement/animal-crossing-3-pack.png" },
+  { head: "f0010007", tail: "00000002", name: "Animal Crossing 3 Pack",                         character: "", amiiboSeries: "Animal Crossing",                       gameSeries: "Animal Crossing",       type: "Pack", release: { na: "2015-11-13" }, includes: ["Tom Nook", "K.K.", "Isabelle - Winter Outfit"], image: "assets/supplement/animal-crossing-3-pack.png" },
   { head: "f0010008", tail: "00000002", name: "Splatoon 3 Pack",                                character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2015-05-29" }, includes: ["Inkling Boy", "Inkling Girl", "Inkling Squid"], image: "assets/supplement/splatoon-inkling-3-pack.png" },
   { head: "f0010009", tail: "00000002", name: "Splatoon 3 Pack [Alt Colors]",                   character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2016-07-08" }, includes: ["Inkling Boy", "Inkling Girl", "Inkling Squid"], image: "assets/supplement/splatoon-inkling-3-pack-alt.png" },
   { head: "f001000a", tail: "00000002", name: "Splatoon 3 Pack [Octoling]",                     character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2018-12-07" }, includes: ["Octoling Boy", "Octoling Girl", "Octoling Octopus"], image: "assets/supplement/splatoon-octoling-3-pack.png" },
   { head: "f001000b", tail: "00000002", name: "Callie and Marie 2 Pack",                        character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2017-07-21" }, includes: ["Callie", "Marie"], image: "assets/supplement/callie-marie-2-pack.png" },
   { head: "f001000c", tail: "00000002", name: "Fire Emblem 2 Pack",                             character: "", amiiboSeries: "Fire Emblem",                           gameSeries: "Fire Emblem",           type: "Pack", release: { na: "2017-05-19" }, includes: ["Alm", "Celica"], image: "assets/supplement/fire-emblem-alm-celica.png" },
-  { head: "f001000d", tail: "00000002", name: "Toon Link & Zelda 2 Pack",                       character: "", amiiboSeries: "30th Anniversary",                      gameSeries: "The Legend of Zelda",   type: "Pack", release: { na: "2016-12-02" }, includes: ["Toon Link (The Wind Waker)", "Zelda (The Wind Waker)"], image: "assets/supplement/toon-link-zelda-windwaker.png" },
-  { head: "f001000e", tail: "00000002", name: "Isabelle & Digby 2 Pack",                        character: "", amiiboSeries: "Animal Crossing",                       gameSeries: "Animal Crossing",       type: "Pack", release: { na: "2020-11-20" }, includes: ["Isabelle (Winter Outfit)", "Digby"], image: "assets/supplement/isabelle-digby-2-pack.png" },
-  { head: "f001000f", tail: "00000002", name: "Mario Odyssey Wedding 3 Pack",                   character: "", amiiboSeries: "Super Mario Odyssey",                   gameSeries: "Super Mario Bros.",     type: "Pack", release: { na: "2017-10-27" }, includes: ["Mario (Wedding Outfit)", "Peach (Wedding Outfit)", "Bowser (Wedding Outfit)"], image: "assets/supplement/mario-odyssey-wedding-3pack.png" },
+  { head: "f001000d", tail: "00000002", name: "Toon Link & Zelda 2 Pack",                       character: "", amiiboSeries: "30th Anniversary",                      gameSeries: "The Legend of Zelda",   type: "Pack", release: { na: "2016-12-02" }, includes: ["Toon Link - The Wind Waker", "Toon Zelda - The Wind Waker"], image: "assets/supplement/toon-link-zelda-windwaker.png" },
+  { head: "f001000e", tail: "00000002", name: "Isabelle & Digby 2 Pack",                        character: "", amiiboSeries: "Animal Crossing",                       gameSeries: "Animal Crossing",       type: "Pack", release: { na: "2020-11-20" }, includes: ["Isabelle - Winter Outfit", "Digby"], image: "assets/supplement/isabelle-digby-2-pack.png" },
+  { head: "f001000f", tail: "00000002", name: "Mario Odyssey Wedding 3 Pack",                   character: "", amiiboSeries: "Super Mario Odyssey",                   gameSeries: "Super Mario Bros.",     type: "Pack", release: { na: "2017-10-27" }, includes: ["Mario - Wedding", "Peach - Wedding", "Bowser - Wedding"], image: "assets/supplement/mario-odyssey-wedding-3pack.png" },
   { head: "f0010010", tail: "00000002", name: "Steve & Alex 2-Pack",                            character: "", amiiboSeries: "Super Smash Bros.",                     gameSeries: "Minecraft",             type: "Pack", release: { na: "2022-09-09" }, includes: ["Steve", "Alex"], image: "assets/supplement/steve-alex-2-pack.png" },
   { head: "f0010011", tail: "00000002", name: "Pyra & Mythra 2-Pack",                           character: "", amiiboSeries: "Super Smash Bros.",                     gameSeries: "Xenoblade Chronicles",  type: "Pack", release: { na: "2023-07-21" }, includes: ["Pyra", "Mythra"], image: "assets/supplement/pyra-mythra-2-pack.png" },
   { head: "f0010012", tail: "00000002", name: "Metroid 2 Pack",                                 character: "", amiiboSeries: "Metroid",                               gameSeries: "Metroid",               type: "Pack", release: { na: "2017-09-15" }, includes: ["Samus Aran", "Metroid"], image: "assets/supplement/metroid-samus-2-pack.png" },
   { head: "f0010013", tail: "00000002", name: "Pearl & Marina 2 Pack",                          character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2018-07-13" }, includes: ["Pearl", "Marina"], image: "assets/supplement/pearl-marina-2-pack.png" },
-  { head: "f0010014", tail: "00000002", name: "Pearl And Marina Side Order 2-Pack",             character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2024-09-05" }, includes: ["Pearl (Side Order)", "Marina (Side Order)"], image: "assets/supplement/pearl-marina-side-order.png" },
-  { head: "f0010015", tail: "00000002", name: "Callie And Marie Alterna 2-Pack",                character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2024-09-05" }, includes: ["Callie (Alterna)", "Marie (Alterna)"], image: "assets/supplement/callie-marie-alterna.png" },
+  { head: "f0010014", tail: "00000002", name: "Pearl And Marina Side Order 2-Pack",             character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2024-09-05" }, includes: ["Pearl - Side Order", "Marina - Side Order"], image: "assets/supplement/pearl-marina-side-order.png" },
+  { head: "f0010015", tail: "00000002", name: "Callie And Marie Alterna 2-Pack",                character: "", amiiboSeries: "Splatoon",                              gameSeries: "Splatoon",              type: "Pack", release: { na: "2024-09-05" }, includes: ["Callie - Alterna", "Marie - Alterna"], image: "assets/supplement/callie-marie-alterna.png" },
   { head: "f0010016", tail: "00000002", name: "Shovel Knight Treasure Trove 3 Pack",            character: "", amiiboSeries: "Shovel Knight",                         gameSeries: "Shovel Knight",         type: "Pack", release: { na: "2019-12-31" }, includes: ["Specter Knight", "Plague Knight", "King Knight"], image: "assets/supplement/shovel-knight-3-pack.png" },
   { head: "f0010017", tail: "00000002", name: "Yarn Yoshi - Pink",                              character: "", amiiboSeries: "Yoshi's Woolly World",                  gameSeries: "Yoshi",                 type: "Pack", release: { na: "2015-10-16" }, image: "assets/supplement/yarn-yoshi-pink.png" },
   { head: "f0010018", tail: "00000002", name: "Yarn Yoshi - Blue",                              character: "", amiiboSeries: "Yoshi's Woolly World",                  gameSeries: "Yoshi",                 type: "Pack", release: { na: "2015-10-16" }, image: "assets/supplement/yarn-yoshi-blue.png" },
@@ -1278,12 +1278,18 @@ function sortItems(items) {
   });
 }
 
-function buildCoveredSet() {
-  // Retourne un Set de clés "nom|série" pour les figurines couvertes par un pack possédé.
-  // On utilise nom+série (pas seulement le nom) pour éviter de masquer des figurines
-  // homonymes d'une autre série (ex. "Samus" SSB ≠ "Samus" Metroid Dread).
+function buildCoveredSet(force = false) {
+  // Retourne un Set de clés "nom|série" pour les éléments couverts. Deux cas :
+  //   Passe 1 — Figurines couvertes par un pack possédé (sens direct).
+  //   Passe 2 — Packs couverts parce que toutes leurs figurines sont possédées
+  //             individuellement (sens inverse).
+  // On utilise nom+série pour éviter de masquer des figurines homonymes d'une autre série
+  // (ex. "Samus" SSB ≠ "Samus" Metroid Dread).
+  // force = true : calcule même si hideCovered est désactivé (utilisé par la vue "Mis de côté").
   const covered = new Set();
-  if (!state.filters.hideCovered) return covered;
+  if (!force && !state.filters.hideCovered) return covered;
+
+  // Passe 1 : figurines couvertes par les packs possédés
   for (const pack of state.amiibo) {
     if (pack.type !== "Pack" || !state.owned.has(getId(pack)) || !Array.isArray(pack.includes)) continue;
     const packSeries = normalize(pack.amiiboSeries);
@@ -1296,12 +1302,33 @@ function buildCoveredSet() {
       if (figure) covered.add(`${normalize(figure.name)}|${normalize(figure.amiiboSeries)}`);
     }
   }
+
+  // Passe 2 : packs couverts parce que toutes leurs figurines incluses sont possédées
+  // (directement ou via la couverture de la passe 1)
+  for (const pack of state.amiibo) {
+    if (pack.type !== "Pack" || state.owned.has(getId(pack)) || !Array.isArray(pack.includes) || !pack.includes.length) continue;
+    const packSeries = normalize(pack.amiiboSeries);
+    const allIncludesOwned = pack.includes.every((name) => {
+      const normName = normalize(name);
+      const figure =
+        state.amiibo.find((a) => a.type !== "Pack" && normalize(a.name) === normName && normalize(a.amiiboSeries) === packSeries) ||
+        state.amiibo.find((a) => a.type !== "Pack" && normalize(a.name) === normName);
+      if (!figure) return false;
+      return state.owned.has(getId(figure)) || covered.has(`${normalize(figure.name)}|${normalize(figure.amiiboSeries)}`);
+    });
+    if (allIncludesOwned) {
+      covered.add(`${normalize(pack.name)}|${normalize(pack.amiiboSeries)}`);
+    }
+  }
+
   return covered;
 }
 
 function getFilteredItems() {
   const query = normalize(state.filters.query);
-  const covered = buildCoveredSet();
+  // Vue "Mis de côté" : calculer la couverture même si hideCovered est désactivé
+  const isMisDeCoteView = state.filters.status === "covered";
+  const covered = buildCoveredSet(isMisDeCoteView);
 
   const filtered = state.amiibo.filter((item) => {
     const id = getId(item);
@@ -1310,11 +1337,13 @@ function getFilteredItems() {
     if (state.filters.type && item.type !== state.filters.type) return false;
     if (state.filters.series && item.amiiboSeries !== state.filters.series) return false;
     const ownedViaPack = covered.has(`${normalize(item.name)}|${normalize(item.amiiboSeries)}`);
-    // Masquer complètement les figurines couvertes par un pack (non possédées directement)
-    if (state.filters.hideCovered && ownedViaPack && !owned) return false;
+    const isCovered = ownedViaPack && !owned;
+    // Masquer les éléments couverts (sauf dans la vue "Mis de côté" qui les affiche)
+    if (state.filters.hideCovered && isCovered && !isMisDeCoteView) return false;
     const effectivelyOwned = owned || ownedViaPack;
-    if (state.filters.status === "owned" && !effectivelyOwned) return false;
-    if (state.filters.status === "missing" && effectivelyOwned) return false;
+    if (state.filters.status === "owned"   && !effectivelyOwned) return false;
+    if (state.filters.status === "missing" &&  effectivelyOwned)  return false;
+    if (state.filters.status === "covered" && !isCovered)         return false;
 
     if (!query) return true;
 

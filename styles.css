@@ -199,45 +199,85 @@ h1 {
   color: var(--accent);
 }
 
-.summary-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.metric {
+.summary-bar {
+  display: flex;
+  align-items: stretch;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
-  box-shadow: var(--shadow);
-  padding: 16px;
+  margin-bottom: 14px;
+  overflow: hidden;
 }
 
-.metric-label {
-  display: block;
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  padding: 10px 20px;
+  border-right: 1px solid var(--border);
+  min-width: 0;
+}
+
+.stat:last-child {
+  border-right: 0;
+}
+
+.stat-label {
   color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 700;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  white-space: nowrap;
 }
 
-.metric strong {
-  display: block;
-  margin-top: 8px;
-  font-size: clamp(1.6rem, 3vw, 2.35rem);
+.stat strong {
+  font-size: 1.15rem;
+  font-weight: 800;
   line-height: 1;
 }
 
-.toolbar {
-  display: grid;
-  grid-template-columns: minmax(220px, 1.25fr) repeat(3, minmax(150px, 0.75fr)) auto auto auto;
-  align-items: end;
-  gap: 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  padding: 14px;
+[data-stat="owned"] strong  { color: var(--green); }
+[data-stat="progress"] strong { color: var(--gold); }
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.filter-bar input[type="search"],
+.filter-bar select {
+  min-height: 34px;
+  height: 34px;
+  width: auto;
+  padding: 0 10px;
+  font-size: 0.86rem;
+}
+
+.filter-search {
+  flex: 1;
+  min-width: 140px;
+}
+
+.filter-bar select {
+  flex-shrink: 0;
+}
+
+.filter-bar .segmented {
+  min-height: 34px;
+  flex-shrink: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.filter-bar .segment {
+  min-height: 34px;
+  font-size: 0.84rem;
+  min-width: 70px;
+  padding: 0 10px;
 }
 
 label {
@@ -326,25 +366,30 @@ button:focus-visible {
   background: var(--accent-dark);
 }
 
-.sync-buttons {
+.filter-actions {
   display: flex;
-  flex-direction: column;
   gap: 6px;
+  margin-left: auto;
 }
 
-.sync-btn {
+.filter-action-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
   background: transparent;
-  border-color: var(--border);
   color: var(--muted);
-  font-size: 12px;
-  font-weight: 600;
-  min-height: 36px;
+  padding: 0 11px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
-.sync-btn:hover {
-  background: var(--surface-strong);
+.filter-action-btn:hover {
   border-color: var(--accent);
   color: var(--text);
+  background: var(--surface-strong);
 }
 
 .list-header {
@@ -1295,19 +1340,6 @@ dd {
 }
 
 @media (max-width: 1120px) {
-  .summary-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .toolbar {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .segmented,
-  .ghost-button {
-    width: 100%;
-  }
-
   .resource-grid {
     grid-template-columns: 1fr;
   }
@@ -1357,23 +1389,12 @@ dd {
     width: 100%;
   }
 
-  .summary-grid,
-  .toolbar {
-    grid-template-columns: 1fr;
+  .stat {
+    padding: 8px 14px;
   }
 
-  .segmented {
-    grid-template-columns: 1fr;
-  }
-
-  .segment {
-    min-height: 40px;
-    border-right: 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .segment:last-child {
-    border-bottom: 0;
+  .filter-actions {
+    margin-left: 0;
   }
 
   .amiibo-grid {
@@ -1401,5 +1422,25 @@ dd {
 
   .image-wrap img {
     height: 122px;
+  }
+}
+
+@media (max-width: 520px) {
+  .summary-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .stat:nth-last-child(-n+2) {
+    border-bottom: 0;
   }
 }
